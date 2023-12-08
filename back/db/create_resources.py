@@ -4,7 +4,7 @@ from copy import deepcopy
 
 
 # Функция создает объекты таблиц, объекты движков и объекты инспекторов для каждой БД
-def create_db_resources_v3(creds):
+def create_db_resources(creds):
     engines = deepcopy(creds)
     tables = deepcopy(creds)
     inspectors = deepcopy(creds)

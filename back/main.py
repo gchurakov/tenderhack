@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 app = Flask(__name__)
 
-table = tables['common']['my_table']
+table = tables['common']['tender']
 
 @app.route("/")
 def hello_world():

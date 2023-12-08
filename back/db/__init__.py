@@ -5,11 +5,11 @@ creds = {
     # Общая БД для хранения подрядчиков
     'common': {
         
-            "hostname": your host,
-            "port": your port,
-            "username": your user,
-            "password": your password,
-            "dbname": "common"
+            "hostname": "31.184.254.156",
+            "port": " 5434",
+            "username": "postgres",
+            "password": "root",
+            "dbname": "tenderhack_dev"
         
     },
     
