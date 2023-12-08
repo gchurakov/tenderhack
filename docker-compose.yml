@@ -19,3 +19,18 @@ services:
       - 5000:5000
     volumes:
       - ./back:/app
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=postgres
+    ports:
+      - 5434:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  
+volumes:
+    pgdata:
