@@ -6,7 +6,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 
 const SearchBar = ({setSearchQuery}) => (
-    <form>
+    <form className="w-100">
       <TextField
         id="search-bar"
         className="text"
