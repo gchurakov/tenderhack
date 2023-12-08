@@ -2,13 +2,17 @@ from docx import Document
 from docx.shared import Pt, Cm, RGBColor
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 
+from docx2pdf import convert
+
 # counter of report and contract
 n_report = 1
 n_contract = 1
 
-def create_changes_report(changes:list, path:str='', *args, **kwargs) -> str:
+def create_changes_report(path:str='/docx_files/', *args, **kwargs) -> str:
     'create changes report -> output filename'
-    global n
+    global n_report
+
+    # TODO fill gaps from kwargs
 
     doc = Document()
 
@@ -23,6 +27,7 @@ def create_changes_report(changes:list, path:str='', *args, **kwargs) -> str:
     for run in h1_add.runs:
         run.bold = True
 
+    # TODO fill input date f-str
     city_date_paragraph = doc.add_paragraph()
     city_date_paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
     city_date_paragraph.add_run('г.\xa0Пермь')
@@ -77,19 +82,35 @@ def create_changes_report(changes:list, path:str='', *args, **kwargs) -> str:
 
     # Save the document
     filename = f'{path}changes_report_{n_report}.docx'
-    n += 1
+    n_report += 1
     doc.save(filename)
 
     return filename
 
 
-def create_contract(path: str = '', **kwargs: dict) -> str:
+def create_contract(path: str = '/docx_files/', **kwargs: dict) -> str:
     'create docx contract from dict with info -> output filename'
 
-    # HERE WILL BE MY CODE {dude}
+    global n_contract
+    doc = Document('contract.docx')
+
+    kwargs['contract_n'] = n_contract
+
+    for p in doc.paragraphs:
+        for k, v in kwargs.items():
+            p.text = p.text.replace("{"+k+"}", str(v))
 
     filename = f'{path}contract_{n_contract}.docx'
+    n_contract += 1
+    doc.save(filename)
+
     return filename
+
+
+def to_pdf(filename_docx:str) -> str:
+    'filename .docx -> convert file to .pdf'
+    convert(filename_docx)
+    return ''.join(filename_docx.split('.')[::-1]) + '.pdf'
 
 
 # test_changes = [['3.9999.', 'В соответствии с договором', 'Срок оказания услуг составляет 63 календарных дня (не включает Новогодние, '
@@ -97,4 +118,13 @@ def create_contract(path: str = '', **kwargs: dict) -> str:
 #                                                      'предоплаты в размере 15% от суммы Договора.'],
 #            ['п.10.2.', 'Заказчик обязан внести предоплату в размере 25%', 'Заказчик обязан внести предоплату в размере 50%'],
 #            ['п.1', 'В соответствии с договором', 'Изложено в Приложении №1к настоящему протоколу разногласий Ссылка  на файл']]
-# name = create_changes_report(test_changes)
+# report_name = create_changes_report(test_changes)
+#
+# # TODO clear ROFL before code-review
+# test_params = {'details' : "На поставку расходного материала (Сетка-слинг)",
+#                'place' : "г. Пермь",
+#                'supplier' : "ООО Pizdets",
+#                'contractor': "ЗАО Ebis"}
+#
+# contract_name = create_contract(**test_params)
+
