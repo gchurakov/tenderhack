@@ -1,7 +1,8 @@
 from .db import init_db, db_session
 from flask import Flask
-from back.config import Config
+from config import Config
 from flask_cors import CORS
+from chatapp.models import *
 
 
 def create_app(config_class=Config):
