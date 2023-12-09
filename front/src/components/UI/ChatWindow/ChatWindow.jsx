@@ -7,16 +7,26 @@ import ActionChoiceForm from '../forms/ActionChoiceForm/ActionChoiceForm';
 import ArbitraryItemEdit from '../forms/ArbitraryItemEdit/ArbitraryItemEdit';
 import ArbitraryItemMessage from '../messages/ArbitraryItemMessage/ArbitraryItemMessage';
 
-function ChatWindow({ selectedTender }) {
+function ChatWindow({
+    selectedTender,
+    currentRoom,
+    allMessages,
+    socket,
+    setNewMessage,
+    newMessage,
+    setIsLoggedIn,
+    setCurrentRoom,
+    possibleRooms,
+}) {
     return (
         <div className={css.container}>
             {selectedTender == null ? (
                 <div>Empty</div>
             ) : (
-                <div style={{overflowY: 'auto', height: '100%'}}>
+                <div style={{ overflowY: 'auto', height: '100%' }}>
                     <ChatHeader selectedTender={selectedTender} />
                     <DocumentForm />
-                    <DocumentChoiceForm/>
+                    <DocumentChoiceForm />
                     <ActionChoiceForm />
                     <ArbitraryItemEdit />
                     <ArbitraryItemMessage />

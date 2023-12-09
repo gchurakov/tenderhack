@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { privateRoutes, publicRoutes } from '../../router';
 import { AuthContext } from '../../context';
 // import Loader from "./UI/Loader/Loader";
@@ -13,29 +13,29 @@ const AppRouter = () => {
     // }
 
     return isAuth ? (
-        <Switch>
+        <Routes>
             {privateRoutes.map((route) => (
                 <Route
-                    component={route.component}
+                    element={route.component}
                     path={route.path}
                     exact={route.exact}
                     key={route.path}
                 />
             ))}
-            <Redirect to='/' />
-        </Switch>
+            <Navigate to='/' replace={true} />
+        </Routes>
     ) : (
-        <Switch>
+        <Routes>
             {publicRoutes.map((route) => (
                 <Route
-                    component={route.component}
+                    element={route.component}
                     path={route.path}
                     exact={route.exact}
                     key={route.path}
                 />
             ))}
-            <Redirect to='/' />
-        </Switch>
+            <Navigate to='/' replace={true} />
+        </Routes>
     );
 };
 
