@@ -9,15 +9,22 @@ import { success } from '@mui/material/colors';
 
 
 function RedactionChangedWholeMessage() {
-    const data = { 'idDocument':'55951981', 'fileName':'приложение', 'proposedLink':'#', 'customerLink':'#', 'comment':'я опечатался' }
+    const data = { 
+        'idDocument':'55951981', 
+        'fileName':'приложение', 
+        'proposedFileLink':'#', 
+        'customerFileLink':'#', 
+        'proposedFileName':'файл11#', 
+        'customerFileName':'файл2', 
+        'comment':'я опечатался' }
     return (
 
         <Card variant="outlined">
             <CardContent style={{ paddingBottom: '1em' }}>
                 <Typography>Здравствуйте! Заказчик откорректировал вашу редакцию по договору: №{data.idDocument}</Typography>
                 <Typography>{data.fileName}</Typography>
-                <Typography style={{color:'red'}}>предложенная редакция поставщика: <Link href={data.proposedLink}>ссылка на файл</Link></Typography>
-                <Typography style={{color:'green'}}>редакция заказчика: <Link href={data.customerLink}>ссылка на файл</Link></Typography>
+                <Typography style={{color:'red'}}>предложенная редакция поставщика: <Link href={data.proposedFileLink}>{data.proposedFileName}</Link></Typography>
+                <Typography style={{color:'green'}}>редакция заказчика: <Link href={data.customerFileLink}>{data.customerFileName}</Link></Typography>
                 <Typography>комментарий: {data.comment}</Typography>
 
             </CardContent>
