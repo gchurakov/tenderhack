@@ -1,0 +1,6 @@
+main blue #234b82
+gray blue #d4dbe6
+pale blue #e7eef7
+red #db2b21
+black #1a1a1a
+pale black #8c8c8c
