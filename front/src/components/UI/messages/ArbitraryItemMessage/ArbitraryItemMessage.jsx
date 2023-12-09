@@ -7,7 +7,7 @@ import { Link, Button } from '@mui/material';
 import { TextField } from '@mui/material';
 
 function ArbitraryItemMessage() {
-    const data = { 'documentId':'834954', 'item':1, 'proposedEdition':'поставить 80 кальянов и 10 чарон ьейьи', 'comment':'бля' }
+    const data = { 'documentId': '834954', 'item': 3, 'proposedEdition': 'отменить поставку 10 стульев', 'comment': 'мы не можем себе это позволить' }
     return (
 
         <Card variant="outlined">
@@ -19,8 +19,6 @@ function ArbitraryItemMessage() {
                 <Typography>Пункт: {data.item}</Typography>
                 <Typography>Предложенная редакция: "{data.proposedEdition}"</Typography>
                 <Typography>Комментарий: "{data.comment}"</Typography>
-                
-
 
             </CardContent>
         </Card>
