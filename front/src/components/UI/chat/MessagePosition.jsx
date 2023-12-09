@@ -11,9 +11,9 @@ import { success } from '@mui/material/colors';
 function MsgPos(props) {
     const pos = props.pos //left -- 0; right -- 1
     return (
-        <div>
+        <div >
             {pos === '0' ?
-                <div className='row p-0 m-0'><div className='col-9 p-0 m-0'>
+                <div className='row p-0 m-0 w-100'><div className='col-9 p-0 m-0'>
                     {props.children}
                 </div>
 
@@ -24,7 +24,7 @@ function MsgPos(props) {
 
                 </div>
 
-                    <div className='col-9 p-0 m-0'>
+                    <div className='col-9 p-0 m-0 w-100'>
                         {props.children}
                     </div>
                 </div>}
