@@ -28,6 +28,7 @@ import customer from '../customer.png'
 import cvodka from '../cvodka.png'
 import supply from '../supply.png'
 import CreateContractWithFiles from '../forms/CreateContractWithFiles/CreateContractWithFiles';
+import EndButtons from '../forms/EndButtons/EndButtons';
 
 
 function Pre (props) {
@@ -78,8 +79,9 @@ function ChatWindow({ selectedTender }) {
                     <MsgPos pos='0'><InfoMessage><Typography>Ваши изменения отправлены заказчику, ожидайте его решения. Уведомление также продублируется вам на почту.</Typography></InfoMessage></MsgPos>
                     {`<MsgPos pos='0'><InfoMessage><Typography>Ваши изменения отправлены заказчику, ожидайте его решения. Уведомление также продублируется вам на почту.</Typography></InfoMessage></MsgPos>`}
                     <br/><br/>
-                    <MsgPos pos='0'><SuccessMessage><Typography>Здравствуйте! Заказчик одобрил ваши изменения.</Typography></SuccessMessage></MsgPos>
-                    {`<MsgPos pos='0'><SuccessMessage><Typography>Здравствуйте! Заказчик одобрил ваши изменения.</Typography></SuccessMessage></MsgPos>`}
+                    <MsgPos time='16:48' pos='0'><SuccessMessage><Typography>Здравствуйте! Заказчик одобрил ваши изменения.</Typography></SuccessMessage></MsgPos>
+                    {`<MsgPos time='16:48' pos='0'><SuccessMessage><Typography>Здравствуйте! Заказчик одобрил ваши изменения.</Typography></SuccessMessage></MsgPos>`}
+                    <h1>вот здесь я сделал время отправки</h1>
                     <br/><br/>
                     <MsgPos pos='0'><ErrorMessage><Typography>Здравствуйте! Заказчик отказался от ваших изменений.</Typography></ErrorMessage></MsgPos>
                     {`<MsgPos pos='0'><ErrorMessage><Typography>Здравствуйте! Заказчик отказался от ваших изменений.</Typography></ErrorMessage></MsgPos>`}
@@ -128,7 +130,8 @@ function ChatWindow({ selectedTender }) {
                     <Pic><img src={supply} /></Pic>`}
                     <CreateContractWithFiles />
                     {"<CreateContractWithFiles />"}
-
+                    <EndButtons/>
+                    {"<EndButtons/>"}
                 </div>
             )}
         </div>
