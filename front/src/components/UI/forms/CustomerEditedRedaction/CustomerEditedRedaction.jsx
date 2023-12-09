@@ -8,8 +8,18 @@ import { TextField } from '@mui/material';
 import { success } from '@mui/material/colors';
 
 
-function CustomerEditedRedaction() {
-    const data = { 'idDocument':'55951981', 'item':'10', 'proposedRedaction':'пермь, бульвар гагарина 35', 'customerRedaction':'Пермский край, г. Пермь, бульвар гагарина 35', 'comment':'я опечатался' }
+function CustomerEditedRedaction(props) {
+    // const data = { 'idDocument':'55951981', 'item':'10', 'proposedRedaction':'пермь, бульвар гагарина 35', 'customerRedaction':'Пермский край, г. Пермь, бульвар гагарина 35', 'comment':'я опечатался' }
+    const data = props.data
+    const specification = {
+        _comment:'заказчик откорректировал редакцию, поставщик не/соглашается',
+        'idDocument':'', 
+        'item':'', 
+        'proposedRedaction':'', 
+        'customerRedaction':'', 
+        'comment':'',
+        _method:'get'
+    }
     return (
 
         <Card variant="outlined">

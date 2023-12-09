@@ -6,8 +6,17 @@ import Typography from '@mui/material/Typography';
 import { Link, Button } from '@mui/material';
 import { TextField } from '@mui/material';
 
-function ArbitraryItemForm() {
-    const data = { 'documentId': '834954', 'item': 3, 'proposedEdition': 'отменить поставку 10 стульев', 'comment': 'мы не можем себе это позволить' }
+function ArbitraryItemForm(props) {
+    const data = props.data
+    // const data = { 'documentId': '834954', 'item': 3, 'proposedEdition': 'отменить поставку 10 стульев', 'comment': 'мы не можем себе это позволить' }
+    const specification = {
+        _comment:'поставщик изменил пункт, заказчик не/отказывается',
+        'documentId': '', 
+        'item': '', 
+        'proposedEdition': '', 
+        'comment': '' ,
+        _method: 'get'
+    }
     return (
 
         <Card variant="outlined">

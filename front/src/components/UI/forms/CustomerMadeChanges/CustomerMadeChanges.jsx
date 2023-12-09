@@ -8,8 +8,16 @@ import { TextField } from '@mui/material';
 import { success } from '@mui/material/colors';
 
 
-function CustomerMadeChanges() {
-    const data = { 'proposedRedaction':'пермь, бульвар гагарина 35', 'customerRedaction':'Пермский край, г. Пермь, бульвар гагарина 35', 'comment':'я опечатался' }
+function CustomerMadeChanges(props) {
+    const data = props.data
+    const specification = {
+        '_comment': 'заказчик внёс изменения, поставщик не/соглашается',
+        'proposedRedaction':'', 
+        'customerRedaction':'', 
+        'comment':'',
+        _method:'get'
+
+    }
     return (
 
         <Card variant="outlined">

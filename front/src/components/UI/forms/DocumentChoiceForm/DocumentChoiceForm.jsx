@@ -5,8 +5,15 @@ import { CardActions } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { Link, Button } from '@mui/material';
 
-function DocumentChoiceForm() {
-    const data = { 'protocolId': '22869420', 'link': '#', 'documents': [{ 'name': 'приложение 1', 'link': '#' }, { 'name': 'приложение 2', 'link': '#' }] }
+function DocumentChoiceForm(props) {
+    const data = props.data
+    const specification= { 
+        _comment: 'навигация по приложениям к договору',
+        'protocolId': '', 
+        'link': '', 
+        'documents': 'list[dict{name:str, link:str}]',
+        '_method':'get'
+        }
     return (
 
         <Card variant="outlined">

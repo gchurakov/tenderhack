@@ -7,7 +7,13 @@ import { Link, Button } from '@mui/material';
 import { TextField } from '@mui/material';
 
 function ArbitraryItemEdit() {
-    const data = { 'protocolId': '22869420', 'link': '#', 'documents': [{ 'name': 'приложение 1', 'link': '#' }, { 'name': 'приложение 2', 'link': '#' }] }
+    const specification = {
+        'document_id': '1', 
+        'name': 'place', 
+        'value': 'г. Москва', 
+        'comment' : 'НУЛЬ',
+        _method: 'post'
+        }
     const SubmitButton = (props) => (<button {...props} type='submit' />);
     return (
 

@@ -22,6 +22,13 @@ import MsgPos from '../chat/MessagePosition';
 import StartButtons from '../forms/StartButtons/StartButtons';
 import FinalButton from '../forms/FinalButton/FinalButton';
 import AcceptWholeDocumentChange from '../forms/AcceptWholeDocumentChange/AcceptWholeDocumentChange';
+import Pic from '../forms/pic/pic';
+import contractItem from '../contractItem.png'
+import customer from '../customer.png'
+import cvodka from '../cvodka.png'
+import supply from '../supply.png'
+import CreateContractWithFiles from '../forms/CreateContractWithFiles/CreateContractWithFiles';
+
 
 function Pre (props) {
     return <React.Fragment>{props.children}</React.Fragment>
@@ -38,10 +45,10 @@ function ChatWindow({ selectedTender }) {
                     <ChatHeader selectedTender={selectedTender} />
                     {`<ChatHeader selectedTender={selectedTender} />`}
                     <br/><br/>
-                    <MsgPos pos='0'><DocumentForm /></MsgPos>
+                    <MsgPos pos='0'><DocumentForm data={{ 'documentId': '22869420', 'link': '#', 'documents': [{ 'name': 'приложение 1', 'link': '#' }, { 'name': 'приложение 2', 'link': '#' }] }}/></MsgPos>
                     {`<MsgPos pos='0'><DocumentForm /></MsgPos>`}
                     <br/><br/>
-                    <MsgPos pos='1'><DocumentChoiceForm/></MsgPos>
+                    <MsgPos pos='1'><DocumentChoiceForm data={{ 'protocolId': '22869420', 'link': '#', 'documents': [{ 'name': 'приложение 1', 'link': '#' }, { 'name': 'приложение 2', 'link': '#' }] }}/></MsgPos>
                     {`<MsgPos pos='1'><DocumentChoiceForm/></MsgPos>`}
                     <br/><br/>
                     <MsgPos pos='1'><ActionChoiceForm /></MsgPos>
@@ -62,7 +69,7 @@ function ChatWindow({ selectedTender }) {
                     <MsgPos pos='0'><ErrorMessage><Typography>Здравствуйте! Заказчик отказался от ваших изменений.</Typography></ErrorMessage></MsgPos>
                     {`<MsgPos pos='0'><ErrorMessage><Typography>Здравствуйте! Заказчик отказался от ваших изменений.</Typography></ErrorMessage></MsgPos>`}
                     <br/><br/>
-                    <MsgPos pos='1'><CustomerEditedRedaction /></MsgPos>
+                    <MsgPos pos='1'><CustomerEditedRedaction data={{ 'idDocument':'55951981', 'item':'10', 'proposedRedaction':'пермь, бульвар гагарина 35', 'customerRedaction':'Пермский край, г. Пермь, бульвар гагарина 35', 'comment':'я опечатался' }}/></MsgPos>
                     {`<MsgPos pos='1'><CustomerEditedRedaction /></MsgPos>`}
                     <br/><br/>
                     <MsgPos pos='1'><EditDynamicFieldForm data={{field:'количесво стульев'}}/></MsgPos>
@@ -77,13 +84,13 @@ function ChatWindow({ selectedTender }) {
                     <MsgPos pos='0'><ErrorMessage><Typography>Здравствуйте! Заказчик отказался от ваших изменений.</Typography></ErrorMessage></MsgPos>
                     {`<MsgPos pos='0'><ErrorMessage><Typography>Здравствуйте! Заказчик отказался от ваших изменений.</Typography></ErrorMessage></MsgPos>`}
                     <br/><br/>
-                    <CustomerMadeChanges/>
+                    <CustomerMadeChanges data={{ 'proposedRedaction':'пермь, бульвар гагарина 35', 'customerRedaction':'Пермский край, г. Пермь, бульвар гагарина 35', 'comment':'я опечатался' }}/>
                     {`<CustomerMadeChanges/>`}
                     <br/><br/>
                     <EditDynamicFieldFixedItemForm data={{itemId: 10}} />
                     {`<EditDynamicFieldFixedItemForm data={{itemId: 10}} />`}
                     <br/><br/>
-                    <ArbitraryItemForm />
+                    <ArbitraryItemForm data={{ 'documentId': '834954', 'item': 3, 'proposedEdition': 'отменить поставку 10 стульев', 'comment': 'мы не можем себе это позволить' }}/>
                     {`<ArbitraryItemForm />`}
                     <br/><br/>
                     <EditWholeDocumentForm />
@@ -110,8 +117,17 @@ function ChatWindow({ selectedTender }) {
                     <FinalButton />
                     {`<FinalButton />`}
                     <br/><br/>
-                    <AcceptWholeDocumentChange />
+                    <AcceptWholeDocumentChange data={{ vendorName:'зао орки', 'documentId':'1235456', 'fileLink':'#', 'fileName':'file', 'comment':'посмотрите пж' }} />
                     {`<AcceptWholeDocumentChange />`}
+                    <Pic prevDisabled={true}><img src={contractItem} /></Pic>
+                    <Pic><img src={customer} /></Pic>
+                    <Pic><img src={cvodka} /></Pic>
+                    <Pic><img src={supply} /></Pic>
+                    {`<Pic><img src={customer} /></Pic>
+                    <Pic><img src={cvodka} /></Pic>
+                    <Pic><img src={supply} /></Pic>`}
+                    <CreateContractWithFiles />
+                    {"<CreateContractWithFiles />"}
 
                 </div>
             )}

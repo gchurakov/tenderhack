@@ -7,7 +7,14 @@ import { Link, Button } from '@mui/material';
 import {TextField} from '@mui/material';
 function EditDynamicFieldForm(props) {
     const SubmitButton = (props) => (<button {...props} type='submit' />);
-
+    const specification = {
+        '_comment': 'изменение произвольного пункта',
+        'redaction': '',
+        'comment':'',
+        '_method':'post',
+        
+        'field':'' // именно строка, не число
+    }
     return (
 
         <Card variant="outlined">
@@ -17,8 +24,8 @@ function EditDynamicFieldForm(props) {
                 <br />
                 <form className="container">
 
-                    <div className="row"> <TextField required id="standard-basic" label="Введите вашу редакцию" variant="standard" /></div>
-                    <div className="row"> <TextField id="standard-basic" label="Введите комментарий" variant="standard" /></div>
+                    <div className="row"> <TextField required id="redaction" label="Введите вашу редакцию" variant="standard" /></div>
+                    <div className="row"> <TextField id="coment" label="Введите комментарий" variant="standard" /></div>
                     <br />
                     <CardActions>
                         <Button size="small" component={SubmitButton} variant='contained' color='success'>Отправить</Button>

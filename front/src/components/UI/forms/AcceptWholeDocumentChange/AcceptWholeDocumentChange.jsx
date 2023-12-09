@@ -8,8 +8,18 @@ import { TextField } from '@mui/material';
 import { success } from '@mui/material/colors';
 
 
-function AcceptWholeDocumentChange() {
-    const data = { vendorName:'зао орки', 'documentId':'1235456', 'fileLink':'#', 'fileName':'file', 'comment':'посмотрите пж' }
+function AcceptWholeDocumentChange(props) {
+    // const data = { vendorName:'зао орки', 'documentId':'1235456', 'fileLink':'#', 'fileName':'file', 'comment':'посмотрите пж' }
+    const data = props.data
+    const specification = {
+        _comment: 'поставщик изменил договор целиком и заказчик не/соглашается',
+        vendorName: 'string',
+        documentId: '', 
+        fileLink: '',
+        fileName: '',
+        comment: '',
+        _method: 'get'
+    }
     return (
 
         <Card variant="outlined">

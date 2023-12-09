@@ -9,7 +9,10 @@ import { success } from '@mui/material/colors';
 
 
 function CreateContractForm() {
-    
+    const specification = {
+        _comment:'создать контракт, пэйлоад на ваш выбор',
+        _method: 'post'
+    }
     return (
 
         <div className="w-100 row" variant="outlined">
