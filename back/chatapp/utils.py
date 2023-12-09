@@ -1,2 +1,2 @@
-def create_dummy_object():
+def create_dummy_objects():
     pass

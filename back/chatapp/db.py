@@ -15,5 +15,5 @@ def init_db():
     # import all modules here that might define models so that
     # they will be registered properly on the metadata.  Otherwise
     # you will have to import them first before calling init_db()
-    from chatapp.models.core import Tender
+    from chatapp.models.core import Tender, Document
     Base.metadata.create_all(bind=engine)
