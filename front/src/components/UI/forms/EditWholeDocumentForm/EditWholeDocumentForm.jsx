@@ -6,27 +6,27 @@ import Typography from '@mui/material/Typography';
 import { Link, Button } from '@mui/material';
 import { TextField } from '@mui/material';
 
-function ArbitraryItemEdit() {
+function EditWholeDocumentForm() {
     const specification = {
-        'document_id': '1', 
-        'name': 'place', 
-        'value': 'г. Москва', 
-        'comment' : 'НУЛЬ',
-        _method: 'post'
-        }
+        '_method':'post',
+        'item':'',
+        'file':'blob',
+        'comment':'',
+        '_comment':'замена всего документа'
+    }
     const SubmitButton = (props) => (<button {...props} type='submit' />);
     return (
 
         <Card variant="outlined">
             <CardContent style={{ paddingBottom: '1em' }}>
                 <br />
-                <Typography>Заявка на изменение пункта договора</Typography>
+                <Typography>Заявка на изменение договора/приложения целиком</Typography>
                 <br />
                 <form className="container">
 
-                    <div className="row"> <TextField required id="standard-basic" label="Введите номер пункта договора" variant="standard" /></div>
-                    <div className="row"> <TextField required id="standard-basic" label="Введите вашу редакцию пункта договора" variant="standard" /></div>
-                    <div className="row"> <TextField id="standard-basic" label="Введите комментарий" variant="standard" /></div>
+                    <div className="row mt-2"> <TextField required id="item" label="Введите номер пункта договора" variant="standard" /></div>
+                    <div className="row mt-2"> <TextField required id="file" type="file" /></div>
+                    <div className="row mt-2"> <TextField id="comment" label="Введите комментарий" variant="standard" /></div>
                     <br />
                     <CardActions>
                         <Button size="small" component={SubmitButton} variant='contained' color='success'>Отправить</Button>
@@ -41,4 +41,4 @@ function ArbitraryItemEdit() {
     );
 }
 
-export default ArbitraryItemEdit;
+export default EditWholeDocumentForm;

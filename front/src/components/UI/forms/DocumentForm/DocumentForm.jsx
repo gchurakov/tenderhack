@@ -5,14 +5,22 @@ import { CardActions } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { Link, Button } from '@mui/material';
 
-function DocumentForm() {
-    const data = { 'protocolId': '22869420', 'link': '#', 'documents': [{ 'name': 'приложение 1', 'link': '#' }, { 'name': 'приложение 2', 'link': '#' }] }
+function DocumentForm(props) {
+    // const data = { 'protocolId': '22869420', 'link': '#', 'documents': [{ 'name': 'приложение 1', 'link': '#' }, { 'name': 'приложение 2', 'link': '#' }] }
+    const data = props.data
+    const specification = {
+        '_comment':'вам отправлены документы заказчика, принять/отклонить',
+        'documentId':'',
+        'link':'',
+        'documents':'list[dict{name:str, link:str}]',
+        '_method': 'get'
+    }
     return (
 
         <Card variant="outlined">
             <CardContent style={{ paddingBottom: '1em' }}>
                 <br />
-                <Typography>Здравствуйте! заказчик отправил вам протокол контракта <Link href={data.link}>№{data.protocolId}</Link></Typography>
+                <Typography>Здравствуйте! заказчик отправил вам протокол контракта <Link href={data.link}>№{data.documentId}</Link></Typography>
                 <br />
                 <Typography>А так же: </Typography>
                 <div className="container">{data.documents.map((doc) => { return <div className="row"><Link href={doc.link}>{doc.name}</Link></div> })}</div>
