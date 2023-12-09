@@ -66,7 +66,7 @@ def changes_report_fill(changes : list,  raw_json:dict, old_value=None) -> str:
     row.cells[1].text = f"В соответствие с договором: {old_value}"
     row.cells[2].text = changes[2]
 
-    raw_json['contract_n'] = n_contract
+    # raw_json['contract_n'] = n_contract
     print(raw_json)
     pattern = r'\{"([^"]+)"="([^"]+)"\}'
 
@@ -81,6 +81,7 @@ def changes_report_fill(changes : list,  raw_json:dict, old_value=None) -> str:
     n_report += 1
     doc.save(filename)
     return filename
+
 
 
 def contract_fill(raw_json: dict, filename: str = None) -> str:
@@ -182,6 +183,7 @@ def contract_change_value(raw_json, filename):
 
     report_name = changes_report_fill(changes, all_values, old_values[0])
 
+    # print("M", matches)
     # print("OLD ", *old_values)
     # print("NEW ", all_values[raw_json['tag']])
     return new_filename, report_name
@@ -286,3 +288,34 @@ json3.pop("signer")
 
 print(contract_fill(json3, "/Users/admin/Desktop/tender/tenderhack/back/docx_files/contract.docx"))
 print(contract_change_value(json1, "/Users/admin/Desktop/tender/tenderhack/back/docx_files/contract_1.docx"))
+
+
+# {
+#     "numberField": "123",
+#     "validityPeriod": {
+#         "startDate": "2023-12-28T19:00:00.000Z",
+#         "endDate": "2023-12-06T19:00:00.000Z"
+#     },
+#     "summ": "123",
+#     "avans": "213",
+#     "financeSource": "123",
+#     "ikz": "123",
+#     "place": "132",
+#     "subject": "312"
+# }
+
+json4 = {
+    "numberField": "123",
+    "validityPeriod": {
+        "startDate": "2023-12-28T19:00:00.000Z",
+        "endDate": "2023-12-06T19:00:00.000Z"
+    },
+    "summ": "123",
+    "avans": "213",
+    "financeSource": "123",
+    "ikz": "123",
+    "place": "132",
+    "subject": "312"
+}
+print(contract_fill(json4))
+
