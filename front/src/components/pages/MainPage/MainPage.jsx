@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import ChatWindow from '../UI/ChatWindow/ChatWindow';
-import TenderList from '../UI/TenderList/TenderList';
+import ChatWindow from '../../UI/ChatWindow/ChatWindow';
+import TenderList from '../../UI/TenderList/TenderList';
 import css from './MainPage.module.css';
-import { AuthContext } from '../../context';
+import { AuthContext } from '../../../context';
 import {
     useMessages,
     useRooms,
     useSocketIOSubscription,
-} from '../../modules/helpers';
+} from '../../../modules/helpers';
 
 function MainPage(props) {
     const [selectedTender, setSelectedTender] = useState(null);

@@ -3,12 +3,8 @@ import './styles/App.css';
 import { BrowserRouter } from 'react-router-dom';
 import AppRouter from './components/UI/AppRouter';
 import { AuthContext } from './context';
-/** @jsxImportSource @emotion/react */
 import axios from 'axios';
-import { useRedirector } from './modules/utilities';
-import { Outlet } from 'react-router-dom';
 import io from 'socket.io-client';
-import MainPage from './components/pages/MainPage';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
