@@ -1,35 +1,32 @@
-from smtplib import SMTP_SSL, SMTP_SSL_PORT
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from secrets import *
 
-def notify_by_email(user_email:str='gcd248@mail.ru', **kwargs)->tuple:
-    "send emails from  loot500chat@mail.ru to clients"
-    SMTP_HOST = 'smtp.mail.ru'
-    SMTP_SSL_PORT = 465
-    body = \
-'''Вам пришло новое сообщение по Тендеру №{tender_n}
-От : {supplier}
-ИНН: {supplier_inn}
-Договор: № {cintract_n}
 
-Смотрите скорее !
-'''
+def send_mail(user_email, tender_n=0, supplier=0, supplier_inn=0, contract_n=0):
+    'send email about contract'
+    smtp_server = "smtp.mail.ru"
+    smtp_port = 587
 
-    # Craft the email by hand
-    from_email = f'LOOT500TEAM <{EMAIL}>'
-    headers = f"From: {from_email}\r\n"
-    headers += f"To: {user_email}\r\n"
-    headers += f"Subject: Новое сообщение в чате!\r\n"
-    email_message = headers + "\r\n" + body
+    msg = MIMEMultipart()
+    msg['From'] = EMAIL
+    msg['To'] = user_email
+    msg['Subject'] = "Новое сообщение в чате!"
+    body = f'''Вам пришло новое сообщение по Тендеру №{tender_n}.\nОт : {supplier}\nИНН: {supplier_inn}\nДоговор: № {contract_n}\n\nСмотрите скорее!'''
+    msg.attach(MIMEText(body, 'plain'))
 
-    # Connect, authenticate, and send mail
-    smtp_server = SMTP_SSL(SMTP_HOST, port=SMTP_SSL_PORT)
-    # smtp_server.set_debuglevel(1)  # Show SMTP server interactions
-    smtp_server.login(EMAIL, EMAIL_PWD)
-    resp = smtp_server.sendmail(from_email, user_email, email_message)
+    try:
+        with smtplib.SMTP(smtp_server, smtp_port) as server:
+            server.starttls()
+            server.login(EMAIL, EMAIL_PWD)
+            server.sendmail(EMAIL, user_email, msg.as_string())
+        return True
 
-    # Disconnect
-    smtp_server.quit()
+    except Exception as e:
+        print(f"Error: {e}")
 
-    return resp[user_email]
+    return False
 
-print(notify_by_email())
+
+# print(send_mail("gcd248@mail.ru"))

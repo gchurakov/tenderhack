@@ -2,7 +2,8 @@ from db import tables, engines, inspectors
 from flask import Flask
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from create_docx import create_changes_report, create_contract
+from create_docx import create_changes_report, create_contract, to_pdf
+from notifications import send_mail
 
 app = Flask(__name__)
 

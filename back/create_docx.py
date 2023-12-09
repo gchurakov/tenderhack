@@ -1,14 +1,16 @@
+import os
 from docx import Document
 from docx.shared import Pt, Cm, RGBColor
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
-
+import pypandoc
 from docx2pdf import convert
-
+from datetime import date
 # counter of report and contract
 n_report = 1
 n_contract = 1
 
-def create_changes_report(path:str='/docx_files/', *args, **kwargs) -> str:
+
+def create_changes_report(changes:dict, path:str='./docx_files/', *args, **kwargs) -> str:
     'create changes report -> output filename'
     global n_report
 
@@ -22,32 +24,33 @@ def create_changes_report(path:str='/docx_files/', *args, **kwargs) -> str:
         run.bold = True
         run.font.color.rgb = RGBColor(0, 0, 0)
 
-    h1_add = doc.add_paragraph('к договору поставки № 3879789 от 18 сентября 2023 года')
+    h1_add = doc.add_paragraph(f'к договору поставки № {kwargs["contract_n"]} от {"contract_date"}')# TODO
     h1_add.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
     for run in h1_add.runs:
         run.bold = True
 
-    # TODO fill input date f-str
+    d = date.today()
+    today = '.'.join([str(i) for i in (d.day, d.month, d.year)])
+
     city_date_paragraph = doc.add_paragraph()
     city_date_paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
-    city_date_paragraph.add_run('г.\xa0Пермь')
-    city_date_paragraph.add_run('\t\t\t\t\t\t\t\t\t«20»\xa0октября\xa02023\xa0года').alignment = WD_PARAGRAPH_ALIGNMENT.RIGHT
+    city_date_paragraph.add_run(f'{kwargs["place"]}\t\t\t\t\t\t\t\t\t{today}').alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
 
     # TODO fill input data f-str
-    doc.add_paragraph('\tОбщество с ограниченной ответственностью «ООО Ромашка», именуемое в дальнейшем «Заказчик», '
-                      'в лице директора Иванова Ивана Ивановича, действующего на основании Устава, с одной стороны,\n '
-                      '\tОбщество с ограниченной ответственностью «ООО Одуванчик», именуемое в дальнейшем «Поставщик», '
-                      'в лице директора Петра Петровича Петрова, действующего на основании Устава, с другой стороны\n'
-                      '\tсоставили настоящий протокол разногласий к договору поставки  № 43687 от 29.09.2023 года о нижеследующем:'
+    doc.add_paragraph(f'\t{kwargs["supplier"]}, именуемое в дальнейшем «Заказчик», '
+                      f'в лице директора Иванова Ивана Ивановича, действующего на основании Устава, с одной стороны,\n '
+                      f'\t{kwargs["contractor"]}, именуемое в дальнейшем «Поставщик», '
+                      f'в лице директора Петра Петровича Петрова, действующего на основании Устава, с другой стороны\n'
+                      f'\tсоставили настоящий протокол разногласий к договору поставки  № {kwargs["contract_n"]} от kwargs["contract_date"] о нижеследующем:'
                       ).alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
 
     table_data = [['Пункт договора', 'Текущая версия', 'Предложенные изменения']] + changes
     changes_table = doc.add_table(rows=len(table_data), cols=3)
-    # changes_table.autofit = False
+    changes_table.autofit = False
     changes_table.style = 'Table Grid'
-    changes_table.columns[0].width = Pt(30)
-    changes_table.columns[0].width = Pt(400)
-    changes_table.columns[1].width = Pt(400)
+    changes_table.columns[0].width = Cm(0.5)
+    changes_table.columns[0].width = Cm(5)
+    changes_table.columns[1].width = Cm(5)
 
     for r in range(len(table_data)):
         for c in range(len(table_data[0])):
@@ -60,18 +63,31 @@ def create_changes_report(path:str='/docx_files/', *args, **kwargs) -> str:
 
     # Add the signature lines
     signature_table = doc.add_table(rows=1, cols=2)
-    # signature_table.autofit = False
+    signature_table.autofit = False
     signature_table.style = 'Table Grid'
-    signature_table.columns[0].width = Pt(415)
-    signature_table.columns[1].width = Pt(415)
+    signature_table.columns[0].width = Cm(5)
+    signature_table.columns[1].width = Cm(5)
 
-    # TODO fill supplier and orderer f-str
-    signature_table.cell(0, 0).text = 'ЗАКАЗЧИК\nООО «Ромашка»\nЮридический и почтовый адрес: 777000, ' \
-                                      'г. Москва, ул. Московская, 35 офис 3\nИНН 5655566556\nКПП 232658888\nОГРН 1205900031501\n' \
-                                      'Директор\n__________________________/И.И. Иванов/\nм.п.'
 
-    signature_table.cell(0, 1).text = 'ПОДРЯДЧИК\nООО «Одуванчик»\n614107, г. Пермь, ул. Пермская, д.95, оф.294\nОГРН 1115905006601\n' \
-                                   'ИНН 5655777777\nКПП 232658888\nДиректор\n__________________________/П.П. Петров/\nм.п.'
+    # TODO КОСТЫЛЬ
+    kwargs['contractor_address'] = '*'
+    kwargs['contractor_ogrn'] = '*'
+    kwargs['contractor_inn'] = '*'
+    kwargs['contractor_kpp'] = '*'
+    kwargs['contractor_signer'] = '*'
+    kwargs['contractor_ogrn'] = '*'
+    kwargs['supplier_address'] = '*'
+    kwargs['supplier_ogrn'] = '*'
+    kwargs['supplier_inn'] = '*'
+    kwargs['supplier_kpp'] = '*'
+    kwargs['supplier_signer'] = '*'
+
+
+    signature_table.cell(0, 0).text = f'ЗАКАЗЧИК\n{kwargs["contractor"]}\nЮридический и почтовый адрес: {kwargs["contractor_address"]}\nОГРН {kwargs["contractor_ogrn"]}\n' \
+                                   f'ИНН {kwargs["contractor_inn"]}\nКПП {kwargs["contractor_kpp"]}\n{kwargs["contractor_signer"]}\n__________________________/{kwargs["contractor_signer"]}/\nм.п.'
+
+    signature_table.cell(0,1).text = f'ПОДРЯДЧИК\n{kwargs["supplier"]}\nЮридический и почтовый адрес: {kwargs["supplier_address"]}\nОГРН {kwargs["supplier_ogrn"]}\n' \
+                                   f'ИНН {kwargs["supplier_inn"]}\nКПП {kwargs["supplier_kpp"]}\n{kwargs["supplier_signer"]}\n__________________________/{kwargs["supplier_signer"]}/\nм.п.'
 
     sections = doc.sections
     for section in sections:
@@ -88,11 +104,11 @@ def create_changes_report(path:str='/docx_files/', *args, **kwargs) -> str:
     return filename
 
 
-def create_contract(path: str = '/docx_files/', **kwargs: dict) -> str:
+def create_contract(path_to_save: str = './docx_files/', **kwargs: dict) -> str:
     'create docx contract from dict with info -> output filename'
 
     global n_contract
-    doc = Document('contract.docx')
+    doc = Document('./docx_files/contract.docx')
 
     kwargs['contract_n'] = n_contract
 
@@ -100,31 +116,41 @@ def create_contract(path: str = '/docx_files/', **kwargs: dict) -> str:
         for k, v in kwargs.items():
             p.text = p.text.replace("{"+k+"}", str(v))
 
-    filename = f'{path}contract_{n_contract}.docx'
+    for table in doc.tables:
+        for cell in table._cells:
+            for k, v in kwargs.items():
+                cell.text = cell.text.replace("{"+k+"}", str(v))
+
+    filename = f'{path_to_save}contract_{n_contract}.docx'
     n_contract += 1
     doc.save(filename)
 
     return filename
 
 
-def to_pdf(filename_docx:str) -> str:
-    'filename .docx -> convert file to .pdf'
-    convert(filename_docx)
-    return ''.join(filename_docx.split('.')[::-1]) + '.pdf'
+def to_pdf(filename_docx:str, filename_pdf:str=None) -> str:
+    # 'filename .docx -> convert file to .pdf'
+    # filename_pdf = '.' + ''.join(filename_docx.split('.')[:-1]) + '.pdf' if filename_pdf is None else filename_pdf
+    # convert_file(filename_docx, 'pdf', outputfile=filename_pdf, extra_args=extra_args)
+    # TODO convert to pdf
+    convert(filename_docx,filename_pdf)
+    return filename_pdf
 
 
-# test_changes = [['3.9999.', 'В соответствии с договором', 'Срок оказания услуг составляет 63 календарных дня (не включает Новогодние, '
-#                                                      'Рождественские и другие праздничные дни на территории РФ) с момента получения '
-#                                                      'предоплаты в размере 15% от суммы Договора.'],
-#            ['п.10.2.', 'Заказчик обязан внести предоплату в размере 25%', 'Заказчик обязан внести предоплату в размере 50%'],
-#            ['п.1', 'В соответствии с договором', 'Изложено в Приложении №1к настоящему протоколу разногласий Ссылка  на файл']]
-# report_name = create_changes_report(test_changes)
-#
-# # TODO clear ROFL before code-review
-# test_params = {'details' : "На поставку расходного материала (Сетка-слинг)",
-#                'place' : "г. Пермь",
-#                'supplier' : "ООО Pizdets",
-#                'contractor': "ЗАО Ebis"}
-#
-# contract_name = create_contract(**test_params)
+# TODO clear ROFL before code-review
+test_changes = [['3.9999.', 'В соответствии с договором', 'Срок оказания услуг составляет 63 календарных дня (не включает Новогодние, '
+                                                     'Рождественские и другие праздничные дни на территории РФ) с момента получения '
+                                                     'предоплаты в размере 15% от суммы Договора.'],
+           ['п.10.2.', 'Заказчик обязан внести предоплату в размере 25%', 'Заказчик обязан внести предоплату в размере 50%'],
+           ['п.1', 'В соответствии с договором', 'Изложено в Приложении №1к настоящему протоколу разногласий Ссылка  на файл']]
+
+test_params = {'details' : "На поставку расходного материала (Сетка-слинг)",
+               'place' : "г. Пермь",
+               'supplier' : "ООО Pizdets",
+               'contractor': "ЗАО Ebis",
+               'contract_n': "123"}
+
+report_name = create_changes_report(test_changes, **test_params)
+contract_name = create_contract(**test_params)
+contract_pdf = to_pdf(contract_name)
 
