@@ -30,14 +30,21 @@ function CreateContractModal() {
 
     const [formData, setFormData] = useState({
         numberField: '',
-        validityPeriodStart: null,
-        validityPeriodEnd: null,
-        contractName: '',
+        validityPeriod: {
+            startDate: null,
+            endDate: null,
+        },
         summ: '',
+        avans: '',
+        financeSource: '',
+        ikz: '',
+        place: '',
+        subject: '',
     });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        console.log(name, value);
         setFormData({
             ...formData,
             [name]: value,
@@ -47,6 +54,16 @@ function CreateContractModal() {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Form submitted:', formData);
+    };
+
+    const handleDateChange = (date, field) => {
+        setFormData({
+            ...formData,
+            validityPeriod: {
+                ...formData.validityPeriod,
+                [field]: date,
+            },
+        });
     };
 
     return (
@@ -84,14 +101,38 @@ function CreateContractModal() {
                                 <DatePicker
                                     size='small'
                                     label='От'
-                                    value={formData.validityPeriodStart}
-                                    onChange={handleChange}
+                                    name='validityPeriodStart'
+                                    // value={formData.validityPeriodStart}
+                                    // onChange={handleChange}
+
+                                    value={formData.validityPeriod.startDate}
+                                    onChange={(date) =>
+                                        handleDateChange(date, 'startDate')
+                                    }
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            variant='outlined'
+                                        />
+                                    )}
                                 />
                                 <DatePicker
                                     label='До'
                                     size='small'
-                                    value={formData.validityPeriodEnd}
-                                    onChange={handleChange}
+                                    name='validityPeriodEnd'
+                                    // value={formData.validityPeriodEnd}
+                                    // onChange={handleChange}
+
+                                    value={formData.validityPeriod.endDate}
+                                    onChange={(date) =>
+                                        handleDateChange(date, 'endDate')
+                                    }
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            variant='outlined'
+                                        />
+                                    )}
                                 />
                             </DemoContainer>
                         </LocalizationProvider>
@@ -115,8 +156,8 @@ function CreateContractModal() {
                             type='number'
                             step='0.000001'
                             variant='outlined'
-                            name='summ'
-                            value={formData.summ}
+                            name='avans'
+                            value={formData.avans}
                             onChange={handleChange}
                         />
 
@@ -125,8 +166,8 @@ function CreateContractModal() {
                             size='small'
                             fullWidth
                             variant='outlined'
-                            name='Subject'
-                            value={formData.contractName}
+                            name='subject'
+                            value={formData.subject}
                             onChange={handleChange}
                         />
 
@@ -135,8 +176,8 @@ function CreateContractModal() {
                             size='small'
                             fullWidth
                             variant='outlined'
-                            name='Subject'
-                            value={formData.contractName}
+                            name='place'
+                            value={formData.place}
                             onChange={handleChange}
                         />
 
@@ -147,8 +188,8 @@ function CreateContractModal() {
                             size='small'
                             fullWidth
                             variant='outlined'
-                            name='Subject'
-                            value={formData.contractName}
+                            name='ikz'
+                            value={formData.ikz}
                             onChange={handleChange}
                         />
 
@@ -157,8 +198,8 @@ function CreateContractModal() {
                             size='small'
                             fullWidth
                             variant='outlined'
-                            name='Subject'
-                            value={formData.contractName}
+                            name='financeSource'
+                            value={formData.financeSource}
                             onChange={handleChange}
                         />
 
