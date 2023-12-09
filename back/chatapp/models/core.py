@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 # импортируем классы, используемые для определения атрибутов модели
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, Text, String
 # импортируем объекты для создания отношения между объектами
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -14,8 +14,8 @@ from chatapp.db import Base
 class Tender(Base):
     __tablename__ = "tender"
     id: Mapped[int] = mapped_column(primary_key=True)
-    description: Mapped[str] = mapped_column(nullable=True)
-    tender_number: Mapped[str] = mapped_column(nullable=False)
+    description: Mapped[str] = mapped_column(Text, nullable=True)
+    tender_number: Mapped[str] = mapped_column(Text, nullable=False)
 
     # Прописываем отношение Тендер <- Документ для маппера, чтобы по тендеру вытащить документы
     tender_documents: Mapped[List["Document"]] = relationship(back_populates="tender")
@@ -41,18 +41,21 @@ class Tender(Base):
 class Document(Base):
     __tablename__ = "document"
     id: Mapped[int] = mapped_column(primary_key=True)
-    document_name: Mapped[str] = mapped_column(nullable=False)
+    document_name: Mapped[str] = mapped_column(Text, nullable=False)
     # Внешний ключ для тендера
     tender_id: Mapped[int] = mapped_column(ForeignKey("tender.id"))
     # 0, 1, 2... Определяем тип через Enum
     document_type: Mapped[int] = mapped_column(nullable=False)
     # Поля для хранения файлов
-    document_uri: Mapped[str] = mapped_column(nullable=True)
-    document_binary_data: Mapped[str] = mapped_column(nullable=True)
-    document_binary_data_ext: Mapped[str] = mapped_column(nullable=True)
+    document_uri: Mapped[str] = mapped_column(Text, nullable=True)
+    document_binary_data: Mapped[str] = mapped_column(Text, nullable=True)
+    document_binary_data_ext: Mapped[str] = mapped_column(String(50), nullable=True)
 
     # Прописываем отношение Тендер <- Документ для маппера, чтобы по тендеру вытащить документы
     tender: Mapped["Tender"] = relationship(back_populates="tender_documents")
+
+    # Прописываем отношение Документ <- Исправление в пункте документа
+    contract_clauses: Mapped[List["ContractClause"]] = relationship(back_populates="document")
 
     def __init__(self, document_name, tender_id, document_type, document_uri=None, document_binary_data=None,
                  document_binary_data_ext=None):
@@ -83,6 +86,44 @@ class Document(Base):
                f" document_uri={self.document_uri!r}," \
                f" document_binary_data={self.document_binary_data!r}," \
                f" document_binary_data_ext={self.document_binary_data_ext!r}"
+
+
+class ContractClause(Base):
+    __tablename__ = "contract_clause"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    tender_id: Mapped[str] = mapped_column(nullable=True)
+    document_id: Mapped[int] = mapped_column(ForeignKey("document.id"))
+    before_clause: Mapped[str] = mapped_column(Text)
+    clause: Mapped[str] = mapped_column(Text, nullable=False)
+    comment: Mapped[str] = mapped_column(Text, nullable=True)
+
+    document: Mapped["Document"] = relationship(back_populates="contract_clauses")
+
+    def __init__(self, tender_id, document_id, before_clause, clause, comment):
+        self.tender_id = tender_id
+        self.document_id = document_id
+        self.before_clause = before_clause
+        self.clause = clause
+        self.comment = comment
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "tender_id": self.tender_id,
+            "document_id": self.document_id,
+            "before_clause": self.before_clause,
+            "clause": self.clause,
+            "comment": self.comment,
+        }
+
+    def __repr__(self) -> str:
+        return f"ContractClause(" \
+               f"id={self.id!r}," \
+               f" tender_id={self.tender_id!r}" \
+               f" document_id={self.document_id!r}" \
+               f" before_clause={self.before_clause!r}" \
+               f" clause={self.clause!r}" \
+               f" comment={self.comment!r}"
 
 # class DocumentType(Base):
 #     __tablename__ = "document_type"
