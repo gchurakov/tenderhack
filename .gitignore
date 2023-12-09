@@ -12,6 +12,10 @@
 # production
 /build
 
+# generated documents
+/docx_files/changes_report*
+/docx_files/contract_*
+
 # misc
 .DS_Store
 .env.local
