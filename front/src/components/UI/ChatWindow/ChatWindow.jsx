@@ -29,6 +29,7 @@ import cvodka from '../cvodka.png'
 import supply from '../supply.png'
 import CreateContractWithFiles from '../forms/CreateContractWithFiles/CreateContractWithFiles';
 import EndButtons from '../forms/EndButtons/EndButtons';
+import CreateContractForm2 from '../forms/CreateContractForm/CreateContractForm2';
 
 
 function Pre (props) {
@@ -132,6 +133,8 @@ function ChatWindow({ selectedTender }) {
                     {"<CreateContractWithFiles />"}
                     <EndButtons/>
                     {"<EndButtons/>"}
+                    <CreateContractForm2/>
+                    {"<CreateContractForm2/>"}
                 </div>
             )}
         </div>
