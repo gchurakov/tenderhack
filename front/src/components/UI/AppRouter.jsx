@@ -2,40 +2,40 @@ import React, { useContext } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { privateRoutes, publicRoutes } from '../../router';
 import { AuthContext } from '../../context';
-// import Loader from "./UI/Loader/Loader";
+import { Redirect, Switch } from 'react-router-dom/cjs/react-router-dom.min';
 
 const AppRouter = () => {
-    const { isAuth, isLoading } = useContext(AuthContext);
-    console.log(isAuth);
+    const { isLoggedIn, isLoading } = useContext(AuthContext);
+    console.log(isLoggedIn);
 
     // if (isLoading) {
     //     return <Loader/>
     // }
 
-    return isAuth ? (
-        <Routes>
+    return isLoggedIn ? (
+        <Switch>
             {privateRoutes.map((route) => (
                 <Route
-                    element={route.component}
+                    component={route.component}
                     path={route.path}
                     exact={route.exact}
                     key={route.path}
                 />
             ))}
-            <Navigate to='/' replace={true} />
-        </Routes>
+            <Redirect to='/' />
+        </Switch>
     ) : (
-        <Routes>
+        <Switch>
             {publicRoutes.map((route) => (
                 <Route
-                    element={route.component}
+                    component={route.component}
                     path={route.path}
                     exact={route.exact}
                     key={route.path}
                 />
             ))}
-            <Navigate to='/' replace={true} />
-        </Routes>
+            <Redirect to='/' />
+        </Switch>
     );
 };
 

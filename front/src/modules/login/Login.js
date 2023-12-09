@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import { useRedirector, useContextManager } from '../utilities';
 import axios from 'axios';
 import { css } from '@emotion/react';
+import { useCallback } from 'react';
 
 function loginUser(data, redirect, setIsLoggedIn) {
     // axios.post('../api/login', data).then((response) => {
@@ -15,7 +15,8 @@ function loginUser(data, redirect, setIsLoggedIn) {
 }
 
 function Login() {
-    const { setIsLoggedIn } = useContextManager();
+    // const { setIsLoggedIn } = useContextManager();
+    const { setIsLoggedIn } = useCallback(AuthContext);
     const redirect = useRedirector();
 
     return (

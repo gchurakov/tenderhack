@@ -10,64 +10,31 @@ import { Outlet } from 'react-router-dom';
 import io from 'socket.io-client';
 import MainPage from './components/pages/MainPage';
 
-const socket = io({ autoConnect: false });
-
-const useLoginManager = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [userName, setUserName] = useState();
-    return [isLoggedIn, setIsLoggedIn, userName, setUserName];
-};
-
-const useSessionValidator = (setIsLoggedIn, setUserName) => {
-    const redirect = useRedirector();
-    // useEffect(() => {
-    //     axios.post('../api/validate-previous-session').then((response) => {
-    //         if (response['data']['status'] === 'valid') {
-    //             setIsLoggedIn(true);
-    //             setUserName(response['data']['userName']);
-    //             redirect('../', { replace: true });
-    //         }
-    //     });
-    // }, [setIsLoggedIn, redirect]);
-};
-
 function App() {
-    // const [isAuth, setIsAuth] = useState(false);
-    // const [isLoading, setLoading] = useState(true);
-    // useEffect(() => {
-    //     if (localStorage.getItem('auth')) {
-    //         setIsAuth(true);
-    //     }
-    //     setLoading(false);
-    // }, []);
-    // return (
-    //     <AuthContext.Provider
-    //         value={{
-    //             isAuth,
-    //             setIsAuth,
-    //             isLoading,
-    //         }}
-    //     >
-    //         <BrowserRouter>
-    //             <AppRouter />
-    //         </BrowserRouter>
-    //     </AuthContext.Provider>
-    // );
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoading, setLoading] = useState(true);
+    const socket = io({ autoConnect: false });
 
-    const [isLoggedIn, setIsLoggedIn, userName, setUserName] =
-        useLoginManager();
-    useSessionValidator(setIsLoggedIn, setUserName);
-    const appContext = {
-        isLoggedIn: isLoggedIn,
-        setIsLoggedIn: setIsLoggedIn,
-        socket: socket,
-        userName: userName,
-    };
+    useEffect(() => {
+        if (localStorage.getItem('auth')) {
+            setIsLoggedIn(true);
+        }
+        setLoading(false);
+    }, []);
+
     return (
-        <div>
-            <Outlet context={appContext} />
-            <MainPage />
-        </div>
+        <AuthContext.Provider
+            value={{
+                isLoggedIn,
+                setIsLoggedIn,
+                socket,
+                isLoading,
+            }}
+        >
+            <BrowserRouter>
+                <AppRouter />
+            </BrowserRouter>
+        </AuthContext.Provider>
     );
 }
 

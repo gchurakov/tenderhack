@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ChatWindow from '../UI/ChatWindow/ChatWindow';
 import TenderList from '../UI/TenderList/TenderList';
 import css from './MainPage.module.css';
+import { AuthContext } from '../../context';
 import {
     useMessages,
     useRooms,
     useSocketIOSubscription,
 } from '../../modules/helpers';
-import { useContextManager } from '../../modules/utilities';
 
 function MainPage(props) {
     const [selectedTender, setSelectedTender] = useState(null);
@@ -185,7 +185,7 @@ function MainPage(props) {
         ]);
     }, []);
 
-    const { setIsLoggedIn, socket } = useContextManager();
+    const { setIsLoggedIn, socket } = useContext(AuthContext);
     const [allMessages, dispatchMessages, newMessage, setNewMessage] =
         useMessages();
     const [currentRoom, setCurrentRoom, availableRooms] = useRooms(
@@ -210,7 +210,8 @@ function MainPage(props) {
                 newMessage={newMessage}
                 setIsLoggedIn={setIsLoggedIn}
                 setCurrentRoom={setCurrentRoom}
-                possibleRooms={availableRooms['data']}
+                possibleRooms={availableRooms}
+                // possibleRooms={availableRooms['data']}
             />
         </div>
     );
