@@ -1,13 +1,10 @@
-// import About from "../pages/About";
-// import Posts from "../pages/Posts";
-// import PostIdPage from "../pages/PostIdPage";
-// import Login from "../pages/Login";
 import MainPage from '../components/pages/MainPage';
+import LoginPage from '../components/pages/LoginPage';
 
 export const privateRoutes = [
-    // {path: '/about', component: About, exact: true},
-    // {path: '/posts', component: Posts, exact: true},
-    // {path: '/posts/:id', component: PostIdPage, exact: true},
+    { path: '/messages', component: MainPage, exact: true },
 ];
 
-export const publicRoutes = [{ path: '/', component: MainPage, exact: true }];
+export const publicRoutes = [
+    { path: '/login', component: LoginPage, exact: true },
+];
