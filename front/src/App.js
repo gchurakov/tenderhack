@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles/App.css';
-import {BrowserRouter} from "react-router-dom";
-import AppRouter from "./components/AppRouter";
-import Menu from "./components/Menu"
-import {AuthContext} from "./context";
+import { BrowserRouter } from 'react-router-dom';
+import AppRouter from './components/UI/AppRouter';
+import { AuthContext } from './context';
 
 function App() {
     const [isAuth, setIsAuth] = useState(false);
@@ -11,22 +10,24 @@ function App() {
 
     useEffect(() => {
         if (localStorage.getItem('auth')) {
-            setIsAuth(true)
+            setIsAuth(true);
         }
         setLoading(false);
-    }, [])
+    }, []);
 
     return (
-        <AuthContext.Provider value={{
-            isAuth,
-            setIsAuth,
-            isLoading
-        }}>
+        <AuthContext.Provider
+            value={{
+                isAuth,
+                setIsAuth,
+                isLoading,
+            }}
+        >
             <BrowserRouter>
-                <AppRouter/>
+                <AppRouter />
             </BrowserRouter>
         </AuthContext.Provider>
-    )
+    );
 }
 
 export default App;
