@@ -3,6 +3,7 @@ from flask import Flask
 from config import Config
 from flask_cors import CORS
 from chatapp.models import *
+from .events import socketio
 
 
 def create_app(config_class=Config):
@@ -18,11 +19,16 @@ def create_app(config_class=Config):
 
     # Set up db for app
     try:
-        init_db()
+        init_db(populate_with_test_data=True)
     except Exception as ex:
         app.logger.critical(f"Не удалось подключиться к базе данных: {ex}")
 
     from . import tender
     app.register_blueprint(tender.bp)
+
+    from . import routes
+    app.register_blueprint(routes.main)
+
+    socketio.init_app(app)
 
     return app
