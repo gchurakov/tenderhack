@@ -13,7 +13,7 @@ def get_tenders():
     return f"Here's your tender, Sir: \n {res}", 200
 
 
-@bp.route('/add_tender', methods=['GET'])
+@bp.route('/add_tender', methods=['POST'])
 def add_first_tender():
     obj = Tender(1, "wow", 123)
     db_session.add(obj)
@@ -21,7 +21,7 @@ def add_first_tender():
     return f"Added {obj}", 200
 
 
-@bp.route('/delete_tender', methods=['GET'])
+@bp.route('/delete_tender', methods=['DELETE'])
 def delete_tender():
     obj = Tender.query.filter_by(id=1).first()
     db_session.query(Tender).filter(Tender.id == 1).delete()

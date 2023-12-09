@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import css from './ChatWindow.module.css';
+import CreateContractModal from '../CreateContractModal/CreateContractModal';
+import Button from 'react-bootstrap/Button';
 
 function ChatWindow({ selectedTender }) {
     return (
@@ -9,6 +11,7 @@ function ChatWindow({ selectedTender }) {
             ) : (
                 <div>{selectedTender.name}</div>
             )}
+            <CreateContractModal />
         </div>
     );
 }
