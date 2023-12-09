@@ -57,7 +57,7 @@ function ChatWindow({ selectedTender }) {
                     <MsgPos pos='1'><ArbitraryItemEdit /></MsgPos>
                     {`<MsgPos pos='1'><ArbitraryItemEdit /></MsgPos>`}
                     <br/><br/>
-                    <MsgPos pos='0'><ArbitraryItemMessage /></MsgPos>
+                    <MsgPos pos='0'><ArbitraryItemMessage data={{ 'documentId': '834954', 'item': 3, 'proposedEdition': 'отменить поставку 10 стульев', 'comment': 'мы не можем себе это позволить' }}/></MsgPos>
                     {`<MsgPos pos='0'><ArbitraryItemMessage /></MsgPos>`}
                     <br/><br/>
                     <MsgPos pos='0'><InfoMessage><Typography>Ваши изменения отправлены заказчику, ожидайте его решения. Уведомление также продублируется вам на почту.</Typography></InfoMessage></MsgPos>
@@ -96,7 +96,7 @@ function ChatWindow({ selectedTender }) {
                     <EditWholeDocumentForm />
                     {`<EditWholeDocumentForm />`}
                     <br/><br/>
-                    <EditWholeDocumentMessage />
+                    <EditWholeDocumentMessage data={{ 'fileLink': '#', 'comment':'я всё переписал', 'documentId': '1354153' }}/>
                     {`<EditWholeDocumentMessage />`}
                     <br/><br/>
                     <InfoMessage><Typography>Ваши изменения отправлены заказчику, ожидайте его решения. Уведомление также продублируется вам на почту.</Typography></InfoMessage>

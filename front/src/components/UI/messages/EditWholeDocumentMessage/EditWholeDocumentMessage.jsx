@@ -6,8 +6,8 @@ import Typography from '@mui/material/Typography';
 import { Link, Button } from '@mui/material';
 import { TextField } from '@mui/material';
 
-function EditWholeDocumentMessage() {
-    const data = { 'fileLink': '#', 'comment':'я всё переписал', 'documentId': '1354153' }
+function EditWholeDocumentMessage(props) {
+    const data = props.data
     return (
 
         <Card variant="outlined">
@@ -18,7 +18,6 @@ function EditWholeDocumentMessage() {
                 <Typography>Документ: Договор поставки <b>№{data.documentId}</b></Typography>
                 <Typography><Link href={data.fileLink}>Ссылка на файл</Link></Typography>
                 <Typography>Комментарий: "{data.comment}"</Typography>
-
             </CardContent>
         </Card>
 

@@ -6,8 +6,16 @@ import Typography from '@mui/material/Typography';
 import { Link, Button } from '@mui/material';
 import { TextField } from '@mui/material';
 
-function ArbitraryItemMessage() {
-    const data = { 'documentId': '834954', 'item': 3, 'proposedEdition': 'отменить поставку 10 стульев', 'comment': 'мы не можем себе это позволить' }
+function ArbitraryItemMessage(props) {
+    const data = props.data
+    const specification = {
+        '_comment': 'заявка на изменение пункта в договоре',
+        'documentId': '', 
+        'item': '', 
+        'proposedEdition': '', 
+        'comment': '' ,
+        '_method':'post'
+    }
     return (
 
         <Card variant="outlined">
