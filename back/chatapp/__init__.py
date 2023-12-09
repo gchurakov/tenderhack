@@ -3,7 +3,7 @@ from flask import Flask
 from config import Config
 from flask_cors import CORS
 from chatapp.models import *
-from .events import socketio
+from .extensions import socketio, login_manager
 
 
 def create_app(config_class=Config):
@@ -25,10 +25,10 @@ def create_app(config_class=Config):
 
     from . import tender
     app.register_blueprint(tender.bp)
-
-    from . import routes
-    app.register_blueprint(routes.main)
+    from . import http_routing
+    app.register_blueprint(http_routing.bp)
 
     socketio.init_app(app)
+    login_manager.init_app(app)
 
     return app

@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 # импортируем классы, используемые для определения атрибутов модели
 from sqlalchemy import ForeignKey, Text, String
 # импортируем объекты для создания отношения между объектами
@@ -7,7 +6,7 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 from typing import List, ClassVar
-
+from flask_login import UserMixin
 from chatapp.db import Base
 
 
@@ -91,6 +90,7 @@ class Document(Base):
 class ContractClause(Base):
     __tablename__ = "contract_clause"
     id: Mapped[int] = mapped_column(primary_key=True)
+    # Аналог room_id
     tender_id: Mapped[str] = mapped_column(nullable=True)
     document_id: Mapped[int] = mapped_column(ForeignKey("document.id"))
     before_clause: Mapped[str] = mapped_column(Text)
@@ -125,18 +125,37 @@ class ContractClause(Base):
                f" clause={self.clause!r}" \
                f" comment={self.comment!r}"
 
-# class DocumentType(Base):
-#     __tablename__ = "document_type"
-#     id: Mapped[int] = mapped_column(primary_key=True)
-#     name: Mapped[str] = mapped_column(nullable=False)
-#
-#     def to_dict(self) -> dict:
-#         return {
-#             "id": self.id,
-#             "name": self.name
-#         }
-#
-#     def __repr__(self) -> str:
-#         return f"DocumentType(" \
-#                f"id={self.id!r}," \
-#                f" name={self.name!r}"
+
+class User(UserMixin, Base):
+    __tablename__ = "user"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    username: Mapped[str] = mapped_column(Text, nullable=False, unique=True)
+    password: Mapped[str] = mapped_column(Text, nullable=False)
+    # Коллекция сообщений пользователя
+    # TODO: Переделать для сущностей договоров
+    messages: Mapped[List["Message"]] = relationship(back_populates="user")
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "username": self.username,
+            "password": self.password
+        }
+
+    def __repr__(self) -> str:
+        return f"User(" \
+               f"id={self.id!r}," \
+               f" username={self.username!r}" \
+               f" password={self.password!r}"
+
+
+class Message(Base):
+    __tablename__ = "message"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    message: Mapped[str] = mapped_column(Text, nullable=False)
+    time_iso: Mapped[str] = mapped_column(Text, nullable=False)
+    # Т.к. для нас комнаты чатов = тендеры
+    tender_room_id: Mapped[int] = mapped_column(ForeignKey("tender.id"), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
+    # Получить юзера, который отправил сообщение
+    user: Mapped["User"] = relationship(back_populates="messages")

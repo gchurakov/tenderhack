@@ -5,7 +5,7 @@ from .models.core import Tender, Document
 from .db import engine, db_session, Base
 from .utils import create_dummy_objects
 
-bp = Blueprint('tender', __name__, url_prefix='/api')
+bp = Blueprint('tender', __name__, url_prefix='/api_v0')
 
 
 @bp.route('/tenders', methods=['GET'])
@@ -52,10 +52,12 @@ def populate_db():
     return "OK", 201
 
 
+
 @bp.route('/demo_query_foreign_key', methods=['GET'])
 def demo_query_foreign_key():
     # Получаем объект по id
     test_tender = Tender.query.get(1)
+    print(test_tender)
     # Получаем список всех документов, которые относятся к этому тендеру
     docs = test_tender.tender_documents
     print(docs)
