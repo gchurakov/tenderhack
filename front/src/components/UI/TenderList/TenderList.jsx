@@ -4,7 +4,8 @@ import TenderItem from '../TenderItem/TenderItem';
 
 function TenderList({ tenders, onTenderSelected }) {
     return (
-        <div className={css.container}>
+        <div style={{height:'100%', overflowY:'auto'}}>
+        <div className={css.container} >
             {tenders.map((tender, i) => (
                 <TenderItem
                     key={i}
@@ -12,6 +13,7 @@ function TenderList({ tenders, onTenderSelected }) {
                     onTenderSelected={onTenderSelected}
                 />
             ))}
+        </div>
         </div>
     );
 }

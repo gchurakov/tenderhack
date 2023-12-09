@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import css from './ChatWindow.module.css';
-import CreateContractModal from '../CreateContractModal/CreateContractModal';
-import Button from 'react-bootstrap/Button';
+import ChatHeader from '../ChatHeader/ChatHeader';
+import DocumentForm from '../forms/DocumentForm/DocumentForm';
+import DocumentChoiceForm from '../forms/DocumentChoiceForm/DocumentChoiceForm';
+import ActionChoiceForm from '../forms/ActionChoiceForm/ActionChoiceForm';
+import ArbitraryItemEdit from '../forms/ArbitraryItemEdit/ArbitraryItemEdit';
+import ArbitraryItemMessage from '../messages/ArbitraryItemMessage/ArbitraryItemMessage';
 
 function ChatWindow({ selectedTender }) {
     return (
@@ -9,9 +13,15 @@ function ChatWindow({ selectedTender }) {
             {selectedTender == null ? (
                 <div>Empty</div>
             ) : (
-                <div>{selectedTender.name}</div>
+                <div style={{overflowY: 'auto', height: '100%'}}>
+                    <ChatHeader selectedTender={selectedTender} />
+                    <DocumentForm />
+                    <DocumentChoiceForm/>
+                    <ActionChoiceForm />
+                    <ArbitraryItemEdit />
+                    <ArbitraryItemMessage />
+                </div>
             )}
-            <CreateContractModal />
         </div>
     );
 }

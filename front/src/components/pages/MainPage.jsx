@@ -20,24 +20,162 @@ function MainPage(props) {
                 id: '1323141234',
                 customer: 'вшэ',
                 provider: 'ашот',
+                inn: '123456789',
+                date: '2019-10-31T01:30:00.000-05:00',
+                law_number:'228 ук рф'
             },
             {
                 name: 'tender2',
                 id: '1323141234',
                 customer: 'вшэ',
                 provider: 'ашот',
+                inn: '123456789',
+                date: '2019-10-31T01:30:00.000-05:00',
+                law_number:'228 ук рф'
             },
             {
                 name: 'tender3',
                 id: '1323141234',
                 customer: 'вшэ',
                 provider: 'ашот',
+                inn: '123456789',
+                date: '2019-10-31T01:30:00.000-05:00',
+                law_number:'228 ук рф'
             },
             {
                 name: 'tender4',
                 id: '1323141234',
                 customer: 'вшэ',
                 provider: 'ашот',
+                inn: '123456789',
+                date: '2019-10-31T01:30:00.000-05:00',
+                law_number:'228 ук рф'
+            },
+            {
+                name: 'tender4',
+                id: '1323141234',
+                customer: 'вшэ',
+                provider: 'ашот',
+                inn: '123456789',
+                date: '2019-10-31T01:30:00.000-05:00',
+                law_number:'228 ук рф'
+            },
+            {
+                name: 'tender4',
+                id: '1323141234',
+                customer: 'вшэ',
+                provider: 'ашот',
+                inn: '123456789',
+                date: '2019-10-31T01:30:00.000-05:00',
+                law_number:'228 ук рф'
+            },
+            {
+                name: 'tender4',
+                id: '1323141234',
+                customer: 'вшэ',
+                provider: 'ашот',
+                inn: '123456789',
+                date: '2019-10-31T01:30:00.000-05:00',
+                law_number:'228 ук рф'
+            },
+            {
+                name: 'tender4',
+                id: '1323141234',
+                customer: 'вшэ',
+                provider: 'ашот',
+                inn: '123456789',
+                date: '2019-10-31T01:30:00.000-05:00',
+                law_number:'228 ук рф'
+            },
+            {
+                name: 'tender4',
+                id: '1323141234',
+                customer: 'вшэ',
+                provider: 'ашот',
+                inn: '123456789',
+                date: '2019-10-31T01:30:00.000-05:00',
+                law_number:'228 ук рф'
+            },
+            {
+                name: 'tender4',
+                id: '1323141234',
+                customer: 'вшэ',
+                provider: 'ашот',
+                inn: '123456789',
+                date: '2019-10-31T01:30:00.000-05:00',
+                law_number:'228 ук рф'
+            },
+            {
+                name: 'tender4',
+                id: '1323141234',
+                customer: 'вшэ',
+                provider: 'ашот',
+                inn: '123456789',
+                date: '2019-10-31T01:30:00.000-05:00',
+                law_number:'228 ук рф'
+            },
+            {
+                name: 'tender4',
+                id: '1323141234',
+                customer: 'вшэ',
+                provider: 'ашот',
+                inn: '123456789',
+                date: '2019-10-31T01:30:00.000-05:00',
+                law_number:'228 ук рф'
+            },
+            {
+                name: 'tender4',
+                id: '1323141234',
+                customer: 'вшэ',
+                provider: 'ашот',
+                inn: '123456789',
+                date: '2019-10-31T01:30:00.000-05:00',
+                law_number:'228 ук рф'
+            },
+            {
+                name: 'tender4',
+                id: '1323141234',
+                customer: 'вшэ',
+                provider: 'ашот',
+                inn: '123456789',
+                date: '2019-10-31T01:30:00.000-05:00',
+                law_number:'228 ук рф'
+            },
+            {
+                name: 'tender4',
+                id: '1323141234',
+                customer: 'вшэ',
+                provider: 'ашот',
+                inn: '123456789',
+                date: '2019-10-31T01:30:00.000-05:00',
+                law_number:'228 ук рф'
+            },
+            {
+                name: 'tender4',
+                id: '1323141234',
+                customer: 'вшэ',
+                provider: 'ашот',
+                inn: '123456789',
+                date: '2019-10-31T01:30:00.000-05:00',
+                law_number:'228 ук рф'
+            },
+            {
+                name: 'tender4',
+                id: '1323141234',
+                customer: 'вшэ',
+                provider: 'ашот',
+                inn: '123456789',
+                date: '2019-10-31T01:30:00.000-05:00',
+                law_number:'228 ук рф'
+            },
+            {
+                name: 'tender4',
+                id: '1323141234',
+                customer: 'вшэ',
+                provider: 'ашот',
+                inn: '123456789',
+                date: '2019-10-31T01:30:00.000-05:00',
+                law_number:'228 ук рф'
             },
         ]);
     }, []);
@@ -48,7 +186,7 @@ function MainPage(props) {
                 tenders={tenders}
                 onTenderSelected={handleTenderClick}
             />
-            <ChatWindow selectedTender={selectedTender} />
+            <ChatWindow selectedTender={selectedTender}/>
         </div>
     );
 }
