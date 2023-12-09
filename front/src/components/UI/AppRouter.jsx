@@ -3,14 +3,15 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { privateRoutes, publicRoutes } from '../../router';
 import { AuthContext } from '../../context';
 import { Redirect, Switch } from 'react-router-dom/cjs/react-router-dom.min';
+import { CircularProgress } from '@mui/material';
 
 const AppRouter = () => {
     const { isLoggedIn, isLoading } = useContext(AuthContext);
     console.log(isLoggedIn);
 
-    // if (isLoading) {
-    //     return <Loader/>
-    // }
+    if (isLoading) {
+        return <CircularProgress />;
+    }
 
     return isLoggedIn ? (
         <Switch>
@@ -22,7 +23,7 @@ const AppRouter = () => {
                     key={route.path}
                 />
             ))}
-            <Redirect to='/' />
+            <Redirect to='/messages' />
         </Switch>
     ) : (
         <Switch>

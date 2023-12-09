@@ -121,7 +121,7 @@ async function getPossibleRooms() {
     return response['data'];
 }
 
-// SocketIO state management
+// // SocketIO state management
 // export function useSocketIOSubscription(dispatchMessages, socket) {
 //     useEffect(() => {
 //         socket.connect();
