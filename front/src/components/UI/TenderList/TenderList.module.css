@@ -1,9 +1,9 @@
 .container {
     padding: 8px;
-    min-width: 264px;
+    width: 344px;
     max-width: 344;
     height: 100vh;
-    background-color: #d4dbe6;
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
 }

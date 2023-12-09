@@ -6,7 +6,8 @@ import Typography from '@mui/material/Typography';
 import { Link, Button } from '@mui/material';
 
 function ActionChoiceForm() {
-    const data = { 'protocolId': '22869420', 'link': '#', 'documents': [{ 'name': 'приложение 1', 'link': '#' }, { 'name': 'приложение 2', 'link': '#' }] }
+    const specification = {}
+
     return (
 
         <Card variant="outlined">

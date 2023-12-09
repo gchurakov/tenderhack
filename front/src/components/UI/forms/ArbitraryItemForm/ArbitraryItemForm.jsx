@@ -6,15 +6,16 @@ import Typography from '@mui/material/Typography';
 import { Link, Button } from '@mui/material';
 import { TextField } from '@mui/material';
 
-function ArbitraryItemMessage(props) {
+function ArbitraryItemForm(props) {
     const data = props.data
+    // const data = { 'documentId': '834954', 'item': 3, 'proposedEdition': 'отменить поставку 10 стульев', 'comment': 'мы не можем себе это позволить' }
     const specification = {
-        '_comment': 'заявка на изменение пункта в договоре',
-        'documentId': '',
-        'item': '',
-        'proposedEdition': '',
+        _comment:'поставщик изменил пункт, заказчик не/отказывается',
+        'documentId': '', 
+        'item': '', 
+        'proposedEdition': '', 
         'comment': '' ,
-        '_method':'post'
+        _method: 'get'
     }
     return (
 
@@ -27,11 +28,16 @@ function ArbitraryItemMessage(props) {
                 <Typography>Пункт: {data.item}</Typography>
                 <Typography>Предложенная редакция: "{data.proposedEdition}"</Typography>
                 <Typography>Комментарий: "{data.comment}"</Typography>
-
             </CardContent>
+            <CardActions>
+                <Button size="small" variant='contained' color='success'>Принять редакцию</Button>
+                <Button size="small" variant='contained' color='error'>Отклонить редакцию</Button>
+                <Button size="small" variant='contained' color='warning'>корректировать</Button>
+            </CardActions>
+
         </Card>
 
     );
 }
 
-export default ArbitraryItemMessage;
+export default ArbitraryItemForm;

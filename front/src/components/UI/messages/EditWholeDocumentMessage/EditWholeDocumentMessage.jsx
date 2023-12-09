@@ -6,32 +6,22 @@ import Typography from '@mui/material/Typography';
 import { Link, Button } from '@mui/material';
 import { TextField } from '@mui/material';
 
-function ArbitraryItemMessage(props) {
+function EditWholeDocumentMessage(props) {
     const data = props.data
-    const specification = {
-        '_comment': 'заявка на изменение пункта в договоре',
-        'documentId': '',
-        'item': '',
-        'proposedEdition': '',
-        'comment': '' ,
-        '_method':'post'
-    }
     return (
 
         <Card variant="outlined">
             <CardContent style={{ paddingBottom: '1em' }}>
                 <br />
-                <Typography variant="h6">Заявка на изменение пункта договора</Typography>
+                <Typography variant="h6">Заявка на изменение договора целиком</Typography>
                 <br />
                 <Typography>Документ: Договор поставки <b>№{data.documentId}</b></Typography>
-                <Typography>Пункт: {data.item}</Typography>
-                <Typography>Предложенная редакция: "{data.proposedEdition}"</Typography>
+                <Typography><Link href={data.fileLink}>Ссылка на файл</Link></Typography>
                 <Typography>Комментарий: "{data.comment}"</Typography>
-
             </CardContent>
         </Card>
 
     );
 }
 
-export default ArbitraryItemMessage;
+export default EditWholeDocumentMessage;
