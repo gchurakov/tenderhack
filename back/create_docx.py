@@ -3,118 +3,286 @@ import re
 from docx import Document
 from docx2pdf import convert
 from datetime import datetime
-from core import *
-from .db import engine, db_session, Base
-from .models.core import Tender, Document, ContractClause
+import json
+# from .core import *
+# from .db import engine, db_session, Base
+# from .models.core import Tender, Document, ContractClause
 # counter of report and contract
 n_report = 1
 n_contract = 1
+locations = {
+    'finance_source' : "1",
+    'contractor_address': "Часть 2",
+    'supplier': "Преамбула",
+    'document_name': "1",
+    'contractor_oktmo': "11",
+    'ikz': "1",
+    'reciver': "11",
+    'prepay': "2",
+    'contractor_kpp': "11",
+    'contractor_okpo': "11",
+    'price': "2",
+    'place': "Преамбула",
+    'supplier_signer_in': "11",
+    'contractor_inn': "11",
+    'contractor_ogrn': "11",
+    'contract_date': "Преамбула",
+    'contractor': "Преамбула",
+    'supplier_email': "11",
+    'supplier_ogrn': "11",
+    'period': "3",
+    'supplier_kpp': "11",
+    'supplier_bik': "11",
+    'contactor_bank': "11",
+    'contractor_bik': "11",
+    'contractor_email': "11",
+    'contractor_okato': "11",
+    'contractor_bank_k_account': "11",
+    'supplier_inn': "11",
+    'today': "Преамбула",
+    'supplier_signer': "Преамбула",
+    'contractor_signer': "Преамбула",
+    'price_str': "2",
+    'contractor_signer_in': "11",
+    'supplier_address': "11",
+    'contractorr_phone': "11",
+    'contract_n': "Преамбула",
+    'supplier_bank': "11",
+    'supplier_phone': "11",
+    'supplier_bank_k_account': "11"
+}
 
 
-def create_changes_report(changes:dict,  info:dict, path:str='./docx_files/') -> str:
+def changes_report_fill(changes : list,  raw_json:dict, old_value=None) -> str:
     'create changes report -> output filename'
     global n_report
+
     doc = Document('./docx_files/changes.docx')
+
+    # changes = [locations[tag], '', raw_json[value]]
     changes_table = doc.tables[0]
+    row = changes_table.add_row()
+    row.cells[0].text = changes[0]
+    row.cells[1].text = f"В соответствие с договором: {old_value}"
+    row.cells[2].text = changes[2]
 
-    # fill all changes
-    for r in range(len(changes)):
-        row = changes_table.add_row()
-        for c in range(3):
-            row.cells[c].text = changes[r][c]
-
-    kwargs['contract_n'] = n_contract
+    raw_json['contract_n'] = n_contract
+    print(raw_json)
+    pattern = r'\{"([^"]+)"="([^"]+)"\}'
 
     for p in doc.paragraphs:
-        for k, v in info.items():
-            p.text = p.text.replace("{" + k + "}", str(v))
+        p.text = re.sub(pattern, r'\2', p.text)
 
     for table in doc.tables:
         for cell in table._cells:
-            for k, v in info.items():
-                cell.text = cell.text.replace("{" + k + "}", str(v))
+            cell.text = re.sub(pattern, r'\2', cell.text)
 
-    filename = f'{path}changes_report_{n_report}.docx'
+    filename = f'./docx_files/changes_{n_report}.docx'
     n_report += 1
     doc.save(filename)
     return filename
 
-def create_contract(info: dict, path_to_save: str = './docx_files/') -> str:
+
+def contract_fill(raw_json: dict, filename: str = None) -> str:
     'create docx contract from dict with info -> output filename'
+    # {
+    #     "name": "НИУ ВШЭ",
+    #     "signer": "директор Берсенев Илья Иванович",
+    #     "document_name": "поставка усепешных программистов",
+    #     "place": "г.Москва",
+    #     "price": "1000"
+    # }
+
     global n_contract
-    doc = Document('./docx_files/contract.docx')
+    doc = Document('./docx_files/contract.docx' if filename is None else filename)
 
-    info['contract_n'] = n_contract
+    raw_json['contract_n'] = n_contract
+    raw_json['today'] = datetime.now().strftime('%d.%m.%Y')
 
-    for p in doc.paragraphs:
-        for k, v in info.items():
-            p.text = p.text.replace("{"+k+"}", str(v))
+    for k, v in raw_json.items():
+        pattern = re.compile(r'\{' + re.escape(k) + r'=([^}]+)\}')
 
-    for table in doc.tables:
-        for cell in table._cells:
-            for k, v in info.items():
-                cell.text = cell.text.replace("{"+k+"}", str(v))
+        for p in doc.paragraphs:
+            p.text = pattern.sub('{' + str(k) + '=' + str(v) + '}', p.text)
 
-    filename = f'{path_to_save}contract_{n_contract}.docx'
+        for table in doc.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    cell.text = pattern.sub('{' + str(k) + '=' + str(v) + '}', cell.text)
+
+    filename = f'./docx_files/contract_{n_contract}.docx' if filename is None else filename
     n_contract += 1
     doc.save(filename)
     return filename
 
 
-def to_pdf(filename_docx:str, filename_pdf:str = None) -> str:
+def file_to_docx(filename:str):
+    "get clear file"
+    doc = Document(filename)
+    pattern = re.compile(r'\{([^}]+)=([^}]+)\}')
+
+    for p in doc.paragraphs:
+        p.text = re.sub(pattern, r'\2',  p.text)
+
+    for table in doc.tables:
+        for cell in table._cells:
+            cell.text = re.sub(pattern, r'\2', cell.text)
+
+    filename = f'{"".join(filename.split(".")[:-1])}_export.docx'
+    doc.save(filename)
+    return filename
+
+
+def file_to_pdf(filename_docx:str, filename_pdf:str = None) -> str:
     'filename .docx -> convert file to .pdf'
     filename_pdf = '.' + ''.join(filename_docx.split('.')[:-1]) + '.pdf' if filename_pdf is None else filename_pdf
     convert(filename_docx,filename_pdf)
     return filename_pdf
 
 
-def get_tags_from_docx()->list:
-    tags = []
-    pattern = r'\{([^}]+)\}'
-    files = [Document('./docx_files/contract.docx'), Document('./docx_files/changes.docx')]
-    for f in files:
+def contract_change_value(raw_json, filename):
+    'tag value to value from json'
+    # {
+    # 'document_id': '1',
+    # 'tag': 'place',
+    # 'value': 'г. Москва',
+    # 'comment' : 'НУЛЬ'
+    # }
+    doc = Document(filename)
+    pattern_general = r'\{([^}]+)\}'
+    matches = []
+    old_values = []
 
-        for p in f.paragraphs:
-            tags += re.findall(pattern, p.text)
+    for p in doc.paragraphs:
+        paragraph_matches = re.findall(pattern_general, p.text)
+        matches += paragraph_matches
+        old_values += [value for key, value in (pair.split('=') for pair in paragraph_matches) if
+                       key == raw_json['tag']]
+        p.text = re.sub(r'\{' + re.escape(raw_json["tag"]) + r'=([^}]+)\}',
+                        '{' + raw_json["tag"] + '=' + raw_json["value"] + '}', p.text)
 
-        for t in f.tables:
-            for c in t._cells:
-                tags += re.findall(pattern, c.text)
-    res = ['{' + tag + '}' for tag in set(tags)]
-    return res
+    # Iterate through tables
+    for table in doc.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                cell_matches = re.findall(pattern_general, cell.text)
+                matches += cell_matches
+                old_values += [value for key, value in (pair.split('=') for pair in cell_matches) if
+                               key == raw_json['tag']]
+                cell.text = re.sub(r'\{' + re.escape(raw_json["tag"]) + r'=([^}]+)\}',
+                                   '{' + raw_json["tag"] + '=' + raw_json["value"] + '}', cell.text)
 
-def get_data_from_db(document:Document):
-    'input = tender'
-    tags = get_tags_from_docx()
-    data = dict()
-    supplier_tags = list(filter(lambda tag: 'supplier' in tag, tags))
-    contractor_tags = list(filter(lambda tag: 'contractor' in tag, tags))
+    # Save the modified document
+    new_filename = f'{"".join(filename.split(".")[:-1])}_changed.docx'
+    doc.save(new_filename)
 
-    # IN PROGRESS
+    # Generate report
+    all_values = {key: value for key, value in (pair.split('=') for pair in matches)}
+    changes = [locations[raw_json['tag']], old_values[0], raw_json['value']]
 
-    for tag in supplier_tags:
+    report_name = changes_report_fill(changes, all_values, old_values[0])
 
-        # if tag==
-        data[tag] = 0
+    # print("OLD ", *old_values)
+    # print("NEW ", all_values[raw_json['tag']])
+    return new_filename, report_name
+
+def contract_change_punct(raw_json, filename):
+    'tag value to value from json'
+    # {
+    #     'document_id': '1',
+    #     'punct': '5.1.',
+    #     'value': 'Мы вам все простим.',
+    #     'comment': 'НУЛЬ'
+    # }
+
+    doc = Document(filename)
+    for p in doc.paragraphs:
+        if p.text.startswith(raw_json["punct"]):
+            # print(p.text)
+            p.text = raw_json["punct"] + ' ' + raw_json["value"]
+            # print(p.text)
+
+    # TODO : if punct does not exist - add next
+
+    new_filename = f'{"".join(filename.split(".")[:-1])}_changed.docx'
+    doc.save(new_filename)
+
+    #gen report
+    return new_filename
 
 
-    data['today'] = datetime.now().strftime('%d.%m.%Y')
-
-# TODO clear ROFL before code-review
-# test_changes = [['3.9999.', 'В соответствии с договором', 'Срок оказания услуг составляет 63 календарных дня (не включает Новогодние, '
-#                                                      'Рождественские и другие праздничные дни на территории РФ) с момента получения '
-#                                                      'предоплаты в размере 15% от суммы Договора.'],
-#            ['п.10.2.', 'Заказчик обязан внести предоплату в размере 25%', 'Заказчик обязан внести предоплату в размере 50%'],
-#            ['п.1', 'В соответствии с договором', 'Изложено в Приложении №1к настоящему протоколу разногласий Ссылка  на файл']]
+# def get_data_from_db(clause:ContractClause):
+#     'input = tender'
+#     tags = get_tags_from_docx()
+#     data = dict()
+#     supplier_tags = list(filter(lambda tag: 'supplier' in tag, tags))
+#     contractor_tags = list(filter(lambda tag: 'contractor' in tag, tags))
 #
-# test_params = {'details' : "На поставку расходного материала (Сетка-слинг)",
-#                'place' : "г. Пермь",
-#                'supplier' : "ООО Pizdets",
-#                'contractor': "ЗАО Ebis",
-#                'contract_n': "123"}
+#     data['clause_n'] = clause.tid
+#     data['contract_n'] = clause.tender_id
+#     data['today'] = datetime.now().strftime('%d.%m.%Y')
 #
-# report_name = create_changes_report(test_changes, **test_params)
-# contract_name = create_contract(**test_params)
-# contract_pdf = to_pdf(contract_name)
+#     old = clause.before_clause.json()
+#     new = clause.clause.json()
+#
+#
+#     # IN PROGRESS
+#
+#     for tag in supplier_tags:
+#         data[tag] = tag
+#
+#     for tag in contractor_tags:
+#         data[tag] = tag
 
-print(get_tags_from_docx())
+
+
+json1 = dict({
+'document_id': '1',
+'tag': 'place',
+'value': 'г. Пермь',
+'comment' : 'НУЛЬ'
+})
+
+
+json2 = dict({
+'document_id': '1',
+'punct': '4.1.',
+'value': 'Мы вам все простим.',
+'comment' : 'НУЛЬ'
+})
+# print(contract_change_punct("/Users/admin/Desktop/tender/tenderhack/back/docx_files/contract.docx", json2))
+
+
+# FILL FROM FRONTEND
+json3 = dict({
+"name" : "ПЕРВЫЙ",
+"signer" : "директор Берсенев Илья Иванович",
+"document_name" : "поставка усепешных программистов",
+"place" : "г.Владикавказ",
+"price" : "1000"
+})
+
+# обработать signer + supplier
+json3["supplier"] = json3["name"]
+json3.pop("name")
+json3["supplier_signer"] = json3["signer"]
+json3.pop("signer")
+
+print(contract_fill(json3))
+
+
+# FILL FROM FRONTEND
+json3 = dict({
+"name" : "ВТОРОЙ",
+"signer" : "ВТОРОЙ ВТОРОЙ ВТОРОЙ ВТОРОЙ ",
+"document_name" : "поставка усепешных программистов",
+})
+
+# обработать signer + supplier
+json3["contractor"] = json3["name"]
+json3.pop("name")
+json3["contractor_signer"] = json3["signer"]
+json3.pop("signer")
+
+print(contract_fill(json3, "/Users/admin/Desktop/tender/tenderhack/back/docx_files/contract.docx"))
+print(contract_change_value(json1, "/Users/admin/Desktop/tender/tenderhack/back/docx_files/contract_1.docx"))
