@@ -88,6 +88,7 @@ class Document(Base):
 
 
 class ContractClause(Base):
+    'contract changes'
     __tablename__ = "contract_clause"
     id: Mapped[int] = mapped_column(primary_key=True)
     # Аналог room_id
