@@ -2,7 +2,6 @@ import os
 from docx import Document
 from docx.shared import Pt, Cm, RGBColor
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
-import pypandoc
 from docx2pdf import convert
 from datetime import date
 # counter of report and contract
@@ -129,10 +128,8 @@ def create_contract(path_to_save: str = './docx_files/', **kwargs: dict) -> str:
 
 
 def to_pdf(filename_docx:str, filename_pdf:str=None) -> str:
-    # 'filename .docx -> convert file to .pdf'
-    # filename_pdf = '.' + ''.join(filename_docx.split('.')[:-1]) + '.pdf' if filename_pdf is None else filename_pdf
-    # convert_file(filename_docx, 'pdf', outputfile=filename_pdf, extra_args=extra_args)
-    # TODO convert to pdf
+    'filename .docx -> convert file to .pdf'
+    filename_pdf = '.' + ''.join(filename_docx.split('.')[:-1]) + '.pdf' if filename_pdf is None else filename_pdf
     convert(filename_docx,filename_pdf)
     return filename_pdf
 
