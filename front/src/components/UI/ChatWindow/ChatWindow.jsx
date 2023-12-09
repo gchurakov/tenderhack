@@ -15,6 +15,9 @@ import CustomerMadeChanges from '../forms/CustomerMadeChanges/CustomerMadeChange
 import CustomerEditedRedaction from '../forms/CustomerEditedRedaction/CustomerEditedRedaction';
 import EditDynamicFieldFixedItemForm from '../forms/EditDynamicFieldFixedItemForm/EditDynamicFieldFixedItemForm';
 import ArbitraryItemForm from '../forms/ArbitraryItemForm/ArbitraryItemForm';
+import EditWholeDocumentForm from '../forms/EditWholeDocumentForm/EditWholeDocumentForm';
+import EditWholeDocumentMessage from '../messages/EditWholeDocumentMessage/EditWholeDocumentMessage';
+import RedactionChangedWholeMessage from '../messages/RedactionChangedMessage/RedactionChangedWholeMessage';
 
 function ChatWindow({ selectedTender }) {
     return (
@@ -24,22 +27,50 @@ function ChatWindow({ selectedTender }) {
             ) : (
                 <div style={{overflowY: 'auto', height: '100%'}}>
                     <ChatHeader selectedTender={selectedTender} />
+                    <hr/>
                     <DocumentForm />
+                    <hr/>
                     <DocumentChoiceForm/>
+                    <hr/>
                     <ActionChoiceForm />
+                    <hr/>
                     <ArbitraryItemEdit />
+                    <hr/>
                     <ArbitraryItemMessage />
+                    <hr/>
                     <InfoMessage><Typography>Ваши изменения отправлены заказчику, ожидайте его решения. Уведомление также продублируется вам на почту.</Typography></InfoMessage>
+                    <hr/>
                     <SuccessMessage><Typography>Здравствуйте! Заказчик одобрил ваши изменения.</Typography></SuccessMessage>
+                    <hr/>
                     <ErrorMessage><Typography>Здравствуйте! Заказчик отказался от ваших изменений.</Typography></ErrorMessage>
+                    <hr/>
                     <CustomerEditedRedaction />
+                    <hr/>
                     <EditDynamicFieldForm data={{field:'количесво стульев'}}/>
+                    <hr/>
                     <InfoMessage><Typography>Ваши изменения отправлены заказчику, ожидайте его решения. Уведомление также продублируется вам на почту.</Typography></InfoMessage>
+                    <hr/>
                     <SuccessMessage><Typography>Здравствуйте! Заказчик одобрил ваши изменения.</Typography></SuccessMessage>
+                    <hr/>
                     <ErrorMessage><Typography>Здравствуйте! Заказчик отказался от ваших изменений.</Typography></ErrorMessage>
+                    <hr/>
                     <CustomerMadeChanges/>
+                    <hr/>
                     <EditDynamicFieldFixedItemForm data={{itemId: 10}} />
+                    <hr/>
                     <ArbitraryItemForm />
+                    <hr/>
+                    <EditWholeDocumentForm />
+                    <hr/>
+                    <EditWholeDocumentMessage />
+                    <hr/>
+                    <InfoMessage><Typography>Ваши изменения отправлены заказчику, ожидайте его решения. Уведомление также продублируется вам на почту.</Typography></InfoMessage>
+                    <hr/>
+                    <SuccessMessage><Typography>Здравствуйте! Заказчик одобрил ваши изменения.</Typography></SuccessMessage>
+                    <hr/>
+                    <ErrorMessage><Typography>Здравствуйте! Заказчик отказался от ваших изменений.</Typography></ErrorMessage>
+                    <hr/>
+                    <RedactionChangedWholeMessage />
                 </div>
             )}
         </div>
