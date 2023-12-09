@@ -89,6 +89,7 @@ class Document(Base):
 
 
 class ContractClause(Base):
+    'contract changes'
     __tablename__ = "contract_clause"
     id: Mapped[int] = mapped_column(primary_key=True)
     tender_id: Mapped[str] = mapped_column(nullable=True)

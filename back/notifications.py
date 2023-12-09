@@ -13,6 +13,7 @@ def send_mail(user_email, tender_n=0, supplier=0, supplier_inn=0, contract_n=0):
     msg['From'] = EMAIL
     msg['To'] = user_email
     msg['Subject'] = "Новое сообщение в чате!"
+    # TODO add link to chat or service
     body = f'''Вам пришло новое сообщение по Тендеру №{tender_n}.\nОт : {supplier}\nИНН: {supplier_inn}\nДоговор: № {contract_n}\n\nСмотрите скорее!'''
     msg.attach(MIMEText(body, 'plain'))
 
