@@ -40,6 +40,6 @@ payload = {"numberField": "1234",
             "attachmentFile": {}
         }
 
-dirname = "/Users/admin/Desktop/tender/tenderhack/back/users/1"
+dirname = "/back/users/1"
 filename = contract_fill(payload, dirname)
 print(filename)
