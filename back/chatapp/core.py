@@ -7,7 +7,7 @@ from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 from typing import List, ClassVar
 from flask_login import UserMixin
-from chatapp.db import Base
+from db import Base
 
 
 class Tender(Base):

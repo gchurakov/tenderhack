@@ -3,8 +3,8 @@ from flask import request, Blueprint, jsonify
 from flask_login import login_user, current_user, logout_user
 from sqlalchemy import select
 
-from .db import db_session
-from .models.core import Tender, User
+from db import db_session
+from core import Tender, User
 
 bp = Blueprint('auth', __name__, url_prefix='/api')
 
@@ -63,7 +63,7 @@ def logout():
     return 'logged out'
 
 
-@bp.route('/get_possible_rooms', methods=['GET'])
+@bp.route('/get-possible-rooms', methods=['GET'])
 def get_possible_rooms():
     possible_rooms = []
     rooms = Tender.query.all()
@@ -72,7 +72,7 @@ def get_possible_rooms():
     return {'data': possible_rooms}
 
 
-@bp.route('/get_tender_documents', methods=['GET'])
+@bp.route('/get-tender-documents', methods=['GET'])
 def get_tender_documents():
     possible_rooms = []
     rooms = Tender.query.all()
