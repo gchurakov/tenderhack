@@ -21,7 +21,7 @@ const EditDynamicFieldForm: React.FC<EditDynamicFieldFormProps> = (props) => {
         <Card variant="outlined">
             <CardContent style= {{paddingBottom: '1em'}} >
                 <br />
-                <Typography variant="h6">Заявка на изменение поля "props.data.field"</Typography>
+                <Typography variant="h6">Заявка на изменение поля "{props.data.field}"</Typography>
                 <br />
                 <form className="container">
                     <div className="row"> <TextField required id="redaction" label="Введите вашу редакцию" variant="standard" /></div>

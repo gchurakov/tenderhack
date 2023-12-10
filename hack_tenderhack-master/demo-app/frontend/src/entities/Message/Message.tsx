@@ -19,7 +19,7 @@ export const Message = ({ content, message, orientation = 'left' }: Props) => {
   const className = `message ${orientation}`;
 
   if (content === MessageType.FORM) {
-    return <MsgPos pos={orientation==='left'?'0':'1'}><EditDynamicFieldForm className='message' field={"произвольное поле"}/></MsgPos>
+    return <MsgPos pos={orientation==='left'?'0':'1'}><EditDynamicFieldForm className='message' data={{field:"произвольное поле"}}/></MsgPos>
   }
   if (content === MessageType.INFO) {
     return <MsgPos pos={orientation==='left'?'0':'1'}><InfoMessage className='message'><Typography>{message}</Typography></InfoMessage></MsgPos>
