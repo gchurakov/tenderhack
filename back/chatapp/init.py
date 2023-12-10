@@ -3,8 +3,10 @@ from flask import Flask
 from config import Config
 from flask_cors import CORS
 from chatapp.models import *
-from .extensions import socketio, login_manager
+from .extensions import login_manager
+from flask_socketio import SocketIO
 
+socketio = SocketIO()
 
 def create_app(config_class=Config):
     # Create and configure the App
@@ -31,7 +33,8 @@ def create_app(config_class=Config):
     app.register_blueprint(http_routing.bp)
 
     # socketio.init_app(app)
-    socketio.init_app(app, cors_allowed_origins="*")
+    # socketio.init_app(app, cors_allowed_origins="*")
+    socketio.init_app(app, logger=True, engineio_logger=True)
 
     login_manager.init_app(app)
 

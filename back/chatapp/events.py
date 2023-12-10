@@ -20,9 +20,9 @@ def update_room(payload):
 
 
 @socketio.on('new-message')
-@authenticated_only
+# @authenticated_only
 def handle_new_message(payload):
-    print(payload)
+    print(1)
 
     user = db_session.query(User).filter(
         User.id == session.get('_user_id')).first()

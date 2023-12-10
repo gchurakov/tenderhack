@@ -9,7 +9,7 @@ import NavBar from './components/UI/NavBar/NavBar';
 function App() {
     const [isAuth, setIsAuth] = useState(false);
     const [isLoading, setLoading] = useState(true);
-    const socket = io('http://localhost:5000');
+    const socket = io('http://localhost:5000/');
 
     useEffect(() => {
         if (localStorage.getItem('auth')) {
@@ -22,7 +22,7 @@ function App() {
         <AuthContext.Provider
             value={{
                 isAuth,
-                setIsAuth,  
+                setIsAuth,
                 isLoading,
                 socket,
             }}
