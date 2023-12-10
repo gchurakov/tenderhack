@@ -1,9 +1,9 @@
 from flask import (
     Blueprint, request, current_app, jsonify, abort, Response, send_file
 )
-from .models.core import Tender, Document
-from .db import engine, db_session, Base
-from .utils import create_dummy_objects
+from core import Tender, Document
+from db import engine, db_session, Base
+from utils import create_dummy_objects
 
 bp = Blueprint('tender', __name__, url_prefix='/api_v0')
 
@@ -20,7 +20,7 @@ def documents():
     raise NotImplementedError
 
 
-@bp.route('/add_tender', methods=['POST'])
+@bp.route('/add-tender', methods=['POST'])
 def add_tender():
     obj = Tender(description="wow", tender_number=123)
     db_session.add(obj)
@@ -28,7 +28,7 @@ def add_tender():
     return f"Added {obj}", 200
 
 
-@bp.route('/add_document', methods=['GET'])
+@bp.route('/add-document', methods=['GET'])
 def add_document():
     obj = Document(document_name="TestDoc", tender_id=1, document_type=2)
     db_session.add(obj)
@@ -36,7 +36,7 @@ def add_document():
     return f"Added {obj}", 200
 
 
-@bp.route('/add_contract_clause', methods=['GET'])
+@bp.route('/add-contract-clause', methods=['GET'])
 def add_contract_clause():
     obj = Document(document_name="TestDoc", tender_id=1, document_type=2)
     db_session.add(obj)
@@ -44,7 +44,7 @@ def add_contract_clause():
     return f"Added {obj}", 200
 
 
-@bp.route('/delete_tender', methods=['DELETE'])
+@bp.route('/delete-tender', methods=['DELETE'])
 def delete_tender():
     obj = Tender.query.filter_by(id=1).first()
     db_session.query(Tender).filter(Tender.id == 1).delete()
@@ -52,13 +52,13 @@ def delete_tender():
     return f"Deleted {obj}", 200
 
 
-@bp.route('/populate_db', methods=['GET'])
+@bp.route('/populate-db', methods=['GET'])
 def populate_db():
     create_dummy_objects()
     return "OK", 200
 
 
-@bp.route('/demo_query_foreign_key', methods=['GET'])
+@bp.route('/demo-query-foreign-key', methods=['GET'])
 def demo_query_foreign_key():
     # Получаем объект по id
     test_tender = Tender.query.get(1)

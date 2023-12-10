@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
@@ -8,6 +8,8 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import Input from '@mui/material/Input';
+import { AuthContext } from '../../../context';
+import { sendMessageToServer } from '../../../common/helpers';
 
 const style = {
     position: 'absolute',
@@ -28,6 +30,7 @@ function CreateContractModal() {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const { socket } = useContext(AuthContext);
 
     const [contractProtocol, setContractProtocol] = useState({
         numberField: '',
@@ -70,6 +73,7 @@ function CreateContractModal() {
         e.preventDefault();
         console.log('contractProtocol:', contractProtocol);
         console.log('subsData:', subsData);
+        sendMessageToServer(socket, contractProtocol);
     };
 
     const handleDateChange = (date, field) => {

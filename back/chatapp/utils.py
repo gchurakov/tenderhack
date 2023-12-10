@@ -1,8 +1,8 @@
 from passlib.handlers.sha2_crypt import sha256_crypt
 from datetime import datetime
 
-from .models.core import Tender, Document, User, Message
-from .db import engine, db_session, Base
+from core import Tender, Document, User, Message
+from db import engine, db_session, Base
 
 
 # Вызывать только при полностью пустых таблицах БД!
