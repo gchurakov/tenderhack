@@ -7,6 +7,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import Input from '@mui/material/Input';
 
 const style = {
     position: 'absolute',
@@ -40,7 +41,18 @@ function CreateContractModal() {
         ikz: '',
         place: '',
         subject: '',
+        contractProjectFile: null,
+        attachmentFile: null,
     });
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        const name = event.target.name;
+        setFormData({
+            ...formData,
+            [name]: file,
+        });
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -68,7 +80,19 @@ function CreateContractModal() {
 
     return (
         <div>
-            <Button onClick={handleOpen}>Создать договор</Button>
+            <div className='w-100 row' variant='outlined'>
+                <div className='col-3'></div>
+                <Button
+                    className='col-6'
+                    size='medium'
+                    variant='contained'
+                    color='error'
+                    onClick={handleOpen}
+                >
+                    создать договор
+                </Button>
+                <div className='col-3'></div>
+            </div>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -201,6 +225,20 @@ function CreateContractModal() {
                             name='financeSource'
                             value={formData.financeSource}
                             onChange={handleChange}
+                        />
+
+                        <Typography>Проект контракта</Typography>
+                        <Input
+                            type='file'
+                            name='contractProjectFile'
+                            onChange={handleFileChange}
+                        />
+
+                        <Typography>Приложения</Typography>
+                        <Input
+                            type='file'
+                            name='attachmentFile'
+                            onChange={handleFileChange}
                         />
 
                         <Button
