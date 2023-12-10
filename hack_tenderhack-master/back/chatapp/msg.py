@@ -1,8 +1,9 @@
 import os
-from flask import request, Blueprint, jsonify
+from flask import request, Blueprint, jsonify, send_file
 from create_docx import contract_fill, contract_change_value, file_to_docx
 from notifications import send_email
-from constants import EMAIL_RECIPIENT
+from constants import EMAIL_RECIPIENT, BASE_CONTRACT_URI
+import io
 
 responce = {
     "data": {
@@ -86,12 +87,17 @@ def fill_contract():
             #     with open(filename, 'rb') as f:
             #         responce["data"]["contract_protocol"][filename] = f.read()
             print(formed_file_path)
-            f = os.read()
-            return jsonify("Изменения отражены в контракте"), 200
+
+            return send_file(formed_file_path, as_attachment=True)
         else:
             return 'bad request'
     else:
         return "bad request"
+
+
+@bp.route('/get_contract', methods=['GET'])
+def get_contract():
+    return send_file(BASE_CONTRACT_URI, as_attachment=True)
 
 
 @bp.route('/change_value', methods=['POST'])
