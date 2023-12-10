@@ -7,6 +7,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import Input from '@mui/material/Input';
 
 const style = {
     position: 'absolute',
@@ -28,7 +29,7 @@ function CreateContractModal() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [formData, setFormData] = useState({
+    const [contractProtocol, setContractProtocol] = useState({
         numberField: '',
         validityPeriod: {
             startDate: null,
@@ -42,25 +43,40 @@ function CreateContractModal() {
         subject: '',
     });
 
+    const [subsData, setSubsData] = useState({
+        contractProjectFile: null,
+        attachmentFile: null,
+    });
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        const name = event.target.name;
+        setSubsData({
+            ...contractProtocol,
+            [name]: file,
+        });
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         console.log(name, value);
-        setFormData({
-            ...formData,
+        setContractProtocol({
+            ...contractProtocol,
             [name]: value,
         });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
+        console.log('contractProtocol:', contractProtocol);
+        console.log('subsData:', subsData);
     };
 
     const handleDateChange = (date, field) => {
-        setFormData({
-            ...formData,
+        setContractProtocol({
+            ...contractProtocol,
             validityPeriod: {
-                ...formData.validityPeriod,
+                ...contractProtocol.validityPeriod,
                 [field]: date,
             },
         });
@@ -68,7 +84,19 @@ function CreateContractModal() {
 
     return (
         <div>
-            <Button onClick={handleOpen}>Создать договор</Button>
+            <div className='w-100 row' variant='outlined'>
+                <div className='col-3'></div>
+                <Button
+                    className='col-6'
+                    size='medium'
+                    variant='contained'
+                    color='error'
+                    onClick={handleOpen}
+                >
+                    создать договор
+                </Button>
+                <div className='col-3'></div>
+            </div>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -91,7 +119,7 @@ function CreateContractModal() {
                             fullWidth
                             variant='outlined'
                             name='numberField'
-                            value={formData.numberField}
+                            value={contractProtocol.numberField}
                             onChange={handleChange}
                         />
 
@@ -102,10 +130,13 @@ function CreateContractModal() {
                                     size='small'
                                     label='От'
                                     name='validityPeriodStart'
-                                    // value={formData.validityPeriodStart}
+                                    // value={contractProtocol.validityPeriodStart}
                                     // onChange={handleChange}
 
-                                    value={formData.validityPeriod.startDate}
+                                    value={
+                                        contractProtocol.validityPeriod
+                                            .startDate
+                                    }
                                     onChange={(date) =>
                                         handleDateChange(date, 'startDate')
                                     }
@@ -120,10 +151,12 @@ function CreateContractModal() {
                                     label='До'
                                     size='small'
                                     name='validityPeriodEnd'
-                                    // value={formData.validityPeriodEnd}
+                                    // value={contractProtocol.validityPeriodEnd}
                                     // onChange={handleChange}
 
-                                    value={formData.validityPeriod.endDate}
+                                    value={
+                                        contractProtocol.validityPeriod.endDate
+                                    }
                                     onChange={(date) =>
                                         handleDateChange(date, 'endDate')
                                     }
@@ -145,7 +178,7 @@ function CreateContractModal() {
                             step='0.000001'
                             variant='outlined'
                             name='summ'
-                            value={formData.summ}
+                            value={contractProtocol.summ}
                             onChange={handleChange}
                         />
 
@@ -157,7 +190,7 @@ function CreateContractModal() {
                             step='0.000001'
                             variant='outlined'
                             name='avans'
-                            value={formData.avans}
+                            value={contractProtocol.avans}
                             onChange={handleChange}
                         />
 
@@ -167,7 +200,7 @@ function CreateContractModal() {
                             fullWidth
                             variant='outlined'
                             name='subject'
-                            value={formData.subject}
+                            value={contractProtocol.subject}
                             onChange={handleChange}
                         />
 
@@ -177,7 +210,7 @@ function CreateContractModal() {
                             fullWidth
                             variant='outlined'
                             name='place'
-                            value={formData.place}
+                            value={contractProtocol.place}
                             onChange={handleChange}
                         />
 
@@ -189,7 +222,7 @@ function CreateContractModal() {
                             fullWidth
                             variant='outlined'
                             name='ikz'
-                            value={formData.ikz}
+                            value={contractProtocol.ikz}
                             onChange={handleChange}
                         />
 
@@ -199,9 +232,25 @@ function CreateContractModal() {
                             fullWidth
                             variant='outlined'
                             name='financeSource'
-                            value={formData.financeSource}
+                            value={contractProtocol.financeSource}
                             onChange={handleChange}
                         />
+
+                        <div>
+                            <Typography>Проект контракта</Typography>
+                            <Input
+                                type='file'
+                                name='contractProjectFile'
+                                onChange={handleFileChange}
+                            />
+
+                            <Typography>Приложения</Typography>
+                            <Input
+                                type='file'
+                                name='attachmentFile'
+                                onChange={handleFileChange}
+                            />
+                        </div>
 
                         <Button
                             style={{ marginTop: '8px', marginRight: '8px' }}
