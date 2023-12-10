@@ -72,6 +72,14 @@ export const FormMessagesPicker = () => {
       >
         <Button>скачать файл</Button>
       </a>
+      <a
+        href={`http://127.0.0.1:5000/api/get_protocol_new`}
+        download="Example-document"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <Button>скачать протокол разногласий</Button>
+      </a>
       
     </div>
   );
