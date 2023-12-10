@@ -84,7 +84,7 @@ def changes_report_fill(changes : list,  raw_json:dict, old_value=None) -> str:
 
 
 
-def contract_fill(raw_json: dict, filename: str = None) -> str:
+def contract_fill(raw_json: dict, dirname : str = '',  filename: str = None) -> str:
     'create docx contract from dict with info -> output filename'
     # {
     #     "name": "НИУ ВШЭ",
@@ -270,7 +270,7 @@ json3.pop("name")
 json3["supplier_signer"] = json3["signer"]
 json3.pop("signer")
 
-print(contract_fill(json3))
+# print(contract_fill(json3))
 
 
 # FILL FROM FRONTEND
@@ -286,8 +286,8 @@ json3.pop("name")
 json3["contractor_signer"] = json3["signer"]
 json3.pop("signer")
 
-print(contract_fill(json3, "/Users/admin/Desktop/tender/tenderhack/back/docx_files/contract.docx"))
-print(contract_change_value(json1, "/Users/admin/Desktop/tender/tenderhack/back/docx_files/contract_1.docx"))
+# print(contract_fill(json3, "/Users/admin/Desktop/tender/tenderhack/back/docx_files/contract.docx"))
+# print(contract_change_value(json1, "/Users/admin/Desktop/tender/tenderhack/back/docx_files/contract_1.docx"))
 
 
 # {
@@ -317,5 +317,5 @@ json4 = {
     "place": "132",
     "subject": "312"
 }
-print(contract_fill(json4))
+# print(contract_fill(json4))
 

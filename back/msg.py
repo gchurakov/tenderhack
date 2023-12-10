@@ -1,62 +1,45 @@
-from flask import Blueprint, request, jsonify
-import pickle
 import os
-from .models.core import User
-from .db import db_session
+from create_docx import contract_fill
+
+def add_subs(data):
+    'add tender directory to ./users'
+    # data = {"data": { "contract_protocol" : {"name1" : bin1,
+    #                                           "name2" : bin2]},
+    #                   "comment" : "COMMENT"},
+    #         "decision" : "-1",
+    #         "type" : "subject",
+    #         "tender_id" = "ID"}
+
+    # create dir for pay load bin files
+    dirname = f'/users/{data["data"]["tender_id"]}'
+    if not os.path.exists(dirname):
+        os.makedirs(dirname)
+
+    filenames = []
+    for k, v in data["data"]["contract_protocol"].items():
+        filenames.append(dirname+k)
+        with open(dirname+k, 'wb') as f:
+            f.write(v)
+
+    return dirname, filenames
 
 
 
-@bp.route('/create_user_from_form', methods=['POST'])
-def create_user_from_form():
-    if request.method == 'POST':
-        data = request.get_json(silent=True)
+payload = {"numberField": "1234",
+            "validityPeriod": {
+                "startDate": "2023-12-06T19:00:00.000Z",
+                "endDate": "2023-12-20T19:00:00.000Z"
+            },
+            "summ": "1234",
+            "avans": "1234",
+            "financeSource": "1234",
+            "ikz": "1234",
+            "place": "1234",
+            "subject": "1234",
+            "contractProjectFile": {},
+            "attachmentFile": {}
+        }
 
-        # data = {"data": { "contract_protocol" : {"name" : bin1,
-        #                                           "name" : bin2]},
-        #                   "comment" : "COMMENT"},
-        #         "decision" : "-1",
-        #         "type" : "subject",
-        #         "tender_id" = "ID"}
-
-        # create dir for pay load bin files
-        dirname = f'/users/{data["data"]["tender_id"]}'
-        if not os.path.exists(dirname):
-            os.makedirs(dirname)
-
-        for k, v in data["data"]["contract_protocol"].items():
-                with open(dirname+k, 'wb') as f:
-                    f.write(v)
-
-
-
-
-def proccess_subject(payload):
-    data = payload["data"]
-
-    # to  DB
-    # massage_from_server
-
-    # send email
-
-
-def proccess_contract_contract_msg(payload):
-    if payload["status"] == "-1":
-        # to db
-
-        pass
-
-    else:
-        # is accepted or not
-        # to db
-        pass
-
-
-
-        # new_db_entry = User(
-        #     username=data['username'], password=hashed_password)
-        # print(new_db_entry)
-        # db_session.add(new_db_entry)
-        # db_session.commit()
-        return 'success'
-    else:
-        return '405 METHOD NOT ALLOWED'
+dirname = "/Users/admin/Desktop/tender/tenderhack/back/users/1"
+filename = contract_fill(payload, dirname)
+print(filename)
