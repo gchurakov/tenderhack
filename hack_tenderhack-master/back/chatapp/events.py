@@ -4,6 +4,7 @@ from .db import db_session
 from .extensions import socketio
 from .models.core import User, Tender, Message
 from .auth import authenticated_only
+from .form_types import form_types
 
 
 @socketio.on('update-room')
@@ -19,10 +20,18 @@ def update_room(payload):
 
 
 @socketio.on('new-message')
-@authenticated_only
+# @authenticated_only
 def handle_new_message(payload):
+    print(1)
+
     user = db_session.query(User).filter(
         User.id == session.get('_user_id')).first()
+
+    form_type = payload["type"]
+    proceed_func = form_types[form_type]
+    #proceed_func(session.get('tender_room_id'))
+    result_message = proceed_func(payload)
+
     new_message = {
         'message': payload['message'],
         'timeStamp': payload['timeStamp'],
