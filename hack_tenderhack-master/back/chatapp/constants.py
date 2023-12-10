@@ -44,4 +44,5 @@ LOCATIONS = {
 EMAIL = "loot500chat@mail.ru"
 EMAIL_PWD = "FErtaiGSR6jUcGaEn5sn"
 EMAIL_RECIPIENT = "gcd248@mail.ru"
-BASE_CONTRACT_URI = "C:/Users/misa5/Desktop/500/tenderhack/hack_tenderhack-master/back/chatapp/tenders1/contract_1.docx"
+BASE_CONTRACT_URI = "C:/Users/misa5/Desktop/500/tenderhack/hack_tenderhack-master/back/chatapp/tenders/contract_1.docx"
+BASE_DISAGREEMENT_URI = "C:/Users/misa5/Desktop/500/tenderhack/hack_tenderhack-master/back/chatapp/tenders/disagreement_1.docx"

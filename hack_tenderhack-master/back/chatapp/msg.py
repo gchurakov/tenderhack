@@ -2,7 +2,7 @@ import os
 from flask import request, Blueprint, jsonify, send_file
 from create_docx import contract_fill, contract_change_value, file_to_docx
 from notifications import send_email
-from constants import EMAIL_RECIPIENT, BASE_CONTRACT_URI
+from constants import EMAIL_RECIPIENT, BASE_CONTRACT_URI, BASE_DISAGREEMENT_URI
 import io
 
 responce = {
@@ -98,6 +98,11 @@ def fill_contract():
 @bp.route('/get_contract', methods=['GET'])
 def get_contract():
     return send_file(BASE_CONTRACT_URI, as_attachment=True)
+
+
+@bp.route('/get_protocol_new', methods=['GET'])
+def get_protocol_new():
+    return send_file(BASE_DISAGREEMENT_URI, as_attachment=True)
 
 
 @bp.route('/change_value', methods=['POST'])
