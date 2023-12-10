@@ -10,6 +10,7 @@ def create_app(config_class=Config):
     # Create and configure the App
     app = Flask(__name__)
     CORS(app)
+    # CORS(app, resources={r"/*": {"origins": "*"}})
     app.config.from_object(config_class)
 
     # Register function for handling db connections
@@ -29,7 +30,9 @@ def create_app(config_class=Config):
     from . import http_routing
     app.register_blueprint(http_routing.bp)
 
-    socketio.init_app(app)
+    # socketio.init_app(app)
+    socketio.init_app(app, cors_allowed_origins="*")
+
     login_manager.init_app(app)
 
     return app

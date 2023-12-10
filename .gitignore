@@ -28,3 +28,5 @@ yarn-debug.log*
 yarn-error.log*
 
 venv
+
+/back/chatapp/__pycache__

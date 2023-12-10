@@ -43,10 +43,10 @@ function useCurrentRoom(dispatchMessages, socket, currentRoom) {
         dispatchMessages({ type: 'CLEAR_MESSAGES', data: [] });
         socket.emit('update-room', { roomName: currentRoom }, (payload) => {
             socket.emit('load-all-messages', (payload) => {
-                dispatchMessages({
-                    type: 'ALL_MESSAGES',
-                    data: payload['db_messages'],
-                });
+                // dispatchMessages({
+                //     type: 'ALL_MESSAGES',
+                //     data: payload['db_messages'],
+                // });
             });
         });
     }, [currentRoom, dispatchMessages, socket]);
@@ -77,9 +77,10 @@ export function useSocketIOSubscription(dispatchMessages, socket) {
 }
 
 export function sendMessageToServer(socket, newMessage) {
+    console.log(socket, newMessage);
     socket.emit('new-message', {
         message: newMessage,
-        timeStamp: getUtcSecondsSinceEpoch(),
+        // timeStamp: getUtcSecondsSinceEpoch(),
     });
 }
 

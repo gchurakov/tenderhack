@@ -63,7 +63,7 @@ def logout():
     return 'logged out'
 
 
-@bp.route('/get_possible_rooms', methods=['GET'])
+@bp.route('/get-possible-rooms', methods=['GET'])
 def get_possible_rooms():
     possible_rooms = []
     rooms = Tender.query.all()
@@ -72,7 +72,7 @@ def get_possible_rooms():
     return {'data': possible_rooms}
 
 
-@bp.route('/get_tender_documents', methods=['GET'])
+@bp.route('/get-tender-documents', methods=['GET'])
 def get_tender_documents():
     possible_rooms = []
     rooms = Tender.query.all()
