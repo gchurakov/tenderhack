@@ -22,7 +22,9 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.20.1",
     "reactflow": "^11.10.1",
-    "zustand": "^4.4.7"
+    "zustand": "^4.4.7",
+    "@mui/x-date-pickers":"^6.18.4",
+    "dayjs":"^1.11.10"
   },
   "devDependencies": {
     "@types/compose-function": "^0.0.33",
