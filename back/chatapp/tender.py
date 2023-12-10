@@ -1,9 +1,9 @@
 from flask import (
     Blueprint, request, current_app, jsonify, abort, Response, send_file
 )
-from .models.core import Tender, Document
-from .db import engine, db_session, Base
-from .utils import create_dummy_objects
+from core import Tender, Document
+from db import engine, db_session, Base
+from utils import create_dummy_objects
 
 bp = Blueprint('tender', __name__, url_prefix='/api_v0')
 

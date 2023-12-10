@@ -1,9 +1,9 @@
-from .db import init_db, db_session
+from db import init_db, db_session
 from flask import Flask
 from config import Config
 from flask_cors import CORS
-from chatapp.models import *
-from .extensions import login_manager
+from models import *
+from extensions import login_manager
 from flask_socketio import SocketIO
 
 socketio = SocketIO()
@@ -26,10 +26,10 @@ def create_app(config_class=Config):
     except Exception as ex:
         app.logger.critical(f"Не удалось подключиться к базе данных: {ex}")
 
-    from . import tender
+    import tender
     app.register_blueprint(tender.bp)
 
-    from . import http_routing
+    import http_routing
     app.register_blueprint(http_routing.bp)
 
     # socketio.init_app(app)

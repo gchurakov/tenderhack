@@ -3,8 +3,8 @@ from flask import request, Blueprint, jsonify
 from flask_login import login_user, current_user, logout_user
 from sqlalchemy import select
 
-from .db import db_session
-from .models.core import Tender, User
+from db import db_session
+from core import Tender, User
 
 bp = Blueprint('auth', __name__, url_prefix='/api')
 
