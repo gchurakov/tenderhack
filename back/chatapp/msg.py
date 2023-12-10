@@ -1,7 +1,6 @@
 import os
-from flask import request, Blueprint, jsonify
-from create_docx import contract_fill, contract_change_value, contract_change_punct, contract_change_comment, file_to_docx
-from chatapp.http_routing import bp
+from flask import request, Blueprint
+from create_docx import contract_fill, contract_change_value, file_to_docx
 from notifications import send_email
 
 responce = {
@@ -16,20 +15,18 @@ responce = {
 }
 
 changes_json = {
-{
     "data": {
             "contract_protocol": { 'document_id': '1',
                                    'tag': 'place',
                                    'value': 'г. Москва',
                                    'comment' : 'НУЛЬ'},
             "comment": "COMMENT"},
-        "decision": "1",
-        "type": "subject",
-        "tender_id": "ID"}
+    "decision": "1",
+    "type": "subject",
+    "tender_id": "ID"
 }
 
 changes_json = {
-{
     "data": {
             "contract_protocol": { 'document_id': '1',
                                    'tag': 'place',
@@ -38,11 +35,10 @@ changes_json = {
             "comment": "COMMENT"},
         "decision": "1",
         "type": "subject",
-        "tender_id": "ID"}
+        "tender_id": "ID"
 }
 
-bp = Blueprint('docx', __name__, url_prefix='/api2')
-
+bp = Blueprint('docx', __name__, url_prefix='/api')
 
 @bp.route('/fill_contract', methods=['POST'])
 def fill_contract():
@@ -56,13 +52,13 @@ def fill_contract():
             },
             "decision": "1",
             "type": "subject",
-            "tender_id": "ID"
+            "tender_id": "1"
         }
 
         data = request.get_json(silent=True)
         payload = data["data"]["contract_protocol"]
 
-        changes = contract_fill(payload, dirname=f'/tenders/{data["tender_id"]}')  # TODO add filename?
+        changes = contract_fill(payload, dirname=f'/{data["tender_id"]}')  # TODO add filename?
 
         # TODO add notification to email
         email = "gcd248@mail.ru"
@@ -73,7 +69,7 @@ def fill_contract():
                 filename = file_to_docx(file)
                 with open(filename, 'rb') as f:
                     responce["data"]["contract_protocol"][filename] = f.read()
-            return responce
+            return jsonify(responce), 200
         else:
             return 'bad request'
 
@@ -160,5 +156,5 @@ def add_subs(data):
 #         }
 
 
-filename = contract_fill(payload, dirname)
-print(filename)
+# filename = contract_fill(payload, dirname)
+# print(filename)

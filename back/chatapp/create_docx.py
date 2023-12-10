@@ -58,6 +58,7 @@ def changes_report_fill(changes: list,  raw_json: dict, dirname: str = '',  old_
     global n_report
     input_filename = './docx_files/changes.docx' if filename is None else filename
     output_filename = f'.{dirname}/docx_files/changes_{n_report}.docx'
+
     if not os.path.exists(dirname):
         os.mkdir(dirname)
 
@@ -95,10 +96,16 @@ def contract_fill(raw_json: dict, dirname : str,  input_filename: str = None,  o
     #     "place": "г.Москва",
     #     "price": "1000"
     # }
+
     global n_contract
     input_filename = './docx_files/contract.docx' if input_filename is None else input_filename
     output_filename = f'.{dirname}/contract_{n_contract}.docx' if output_filename is None else output_filename
-    if not os.path.exists(dirname):
+    print("############", input_filename, output_filename)
+    print("############", dirname, os.path.exists(dirname))
+
+    abs_p = '/Users/admin/Desktop/tender/tenderhack/back/chatapp/tenders'
+    print(abs_p+dirname)
+    if not os.path.exists(abs_p+dirname):
         os.mkdir(dirname)
 
     doc = Document(input_filename)
