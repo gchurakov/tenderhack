@@ -13,7 +13,7 @@ def send_email(user_email, site_addr='', comment ='', *args, **kwargs):
     msg['From'] = EMAIL
     msg['To'] = user_email
     msg['Subject'] = "Новое сообщение в чате!"
-    body = f'''Вам пришло новое сообщение по Тендеру №{tender_n}.\nОт : _SUPPLIER_\nИНН: _INN_\nДоговор: № _CONTRACT_N_\nКомментарий: {comment}\nСмотрите скорее!\n{site_addr}'''
+    body = '''Вам пришло новое сообщение по Тендеру №{tender_id}.\nОт : _SUPPLIER_\nИНН: _INN_\nДоговор: № _CONTRACT_N_\nКомментарий: {comment}\nСмотрите скорее!\n{site_addr}'''
     msg.attach(MIMEText(body, 'plain'))
 
     try:

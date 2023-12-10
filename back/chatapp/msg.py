@@ -1,7 +1,10 @@
 import os
-from flask import request, Blueprint
+import io
+from flask import request, Blueprint, jsonify, send_file
 from create_docx import contract_fill, contract_change_value, file_to_docx
 from notifications import send_email
+
+buffer = io.StringIO()
 
 responce = {
     "data": {
@@ -28,17 +31,18 @@ changes_json = {
 
 fill_json = {
     "data": {
-        "numberField": "123",
-        "validityPeriod": {
-            "startDate": "2023-12-28T19:00:00.000Z",
-            "endDate": "2023-12-06T19:00:00.000Z"
-        },
-        "summ": "123",
-        "avans": "213",
-        "financeSource": "123",
-        "ikz": "123",
-        "place": "132",
-        "subject": "312"
+            "contract_protocol":
+                {"numberField": "123",
+                 "validityPeriod": {
+                     "startDate": "2023-12-28T19:00:00.000Z",
+                     "endDate": "2023-12-06T19:00:00.000Z"
+                 },
+                 "summ": "123",
+                 "avans": "213",
+                 "financeSource": "123",
+                 "ikz": "123",
+                 "place": "132",
+                 "subject": "312"}
     },
     "decision": "1",
     "type": "subject",
@@ -51,17 +55,6 @@ bp = Blueprint('docx', __name__, url_prefix='/api')
 def fill_contract():
     if request.method == 'POST':
 
-        responce = {
-            "data": {
-                "contract_protocol": {
-                    # files here : name: bytes
-                }
-            },
-            "decision": "1",
-            "type": "subject",
-            "tender_id": "1"
-        }
-
         data = request.get_json(silent=True)
         payload = data["data"]["contract_protocol"]
 
@@ -70,36 +63,21 @@ def fill_contract():
         # TODO add notification to email
         email = "gcd248@mail.ru"
         print(send_email(email, tender_id=data["tender_id"]))
-
         if changes:
             for file in changes:
                 filename = file_to_docx(file)
-                with open(filename, 'rb') as f:
-                    responce["data"]["contract_protocol"][filename] = f.read()
-            return jsonify(responce), 200
+            return send_file(filename), 200
         else:
-            return 'bad request'
+            return 'not found', 404
 
     else:
-        return "bad request"
+        return 'not found', 404
 
 
 
 @bp.route('/change_value', methods=['POST'])
 def change_value():
     if request.method == 'POST':
-
-        responce = {
-            "data": {
-                "contract_protocol": {
-                    # files here : name: bytes
-                }
-            },
-            "decision": "1",
-            "type": "subject",
-            "tender_id": "ID"
-        }
-
         data = request.get_json(silent=True)
         payload = data["data"]["contract_protocol"]
 
@@ -116,10 +94,10 @@ def change_value():
                     responce["data"]["contract_protocol"][filename] = f.read()
             return responce
         else:
-            return 'bad request'
+            return 'not found', 404
 
     else:
-        return "bad request"
+        return 'not found', 404
 
 
 
@@ -145,23 +123,3 @@ def add_subs(data):
 
     return dirname, filenames
 
-
-
-# payload = {"numberField": "1234",
-#             "validityPeriod": {
-#                 "startDate": "2023-12-06T19:00:00.000Z",
-#                 "endDate": "2023-12-20T19:00:00.000Z"
-#             },
-#             "summ": "1234",
-#             "avans": "1234",
-#             "financeSource": "1234",
-#             "ikz": "1234",
-#             "place": "1234",
-#             "subject": "1234",
-#             "contractProjectFile": {},
-#             "attachmentFile": {}
-#         }
-
-
-# filename = contract_fill(payload, dirname)
-# print(filename)

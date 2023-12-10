@@ -3,7 +3,7 @@ import re
 from docx import Document
 from docx2pdf import convert
 from datetime import datetime
-import json
+from flask import  jsonify
 # from .core import *
 # from .db import engine, db_session, Base
 # from .models.core import Tender, Document, ContractClause
@@ -56,7 +56,7 @@ locations = {
 def changes_report_fill(changes: list,  raw_json: dict, dirname: str = '',  old_value=None) -> str:
     'create changes report -> output filename'
     global n_report
-    input_filename = './docx_files/changes.docx' if filename is None else filename
+    input_filename = './docx_files/changes.docx'
     output_filename = f'.{dirname}/docx_files/changes_{n_report}.docx'
 
     if not os.path.exists(dirname):
@@ -98,15 +98,16 @@ def contract_fill(raw_json: dict, dirname : str,  input_filename: str = None,  o
     # }
 
     global n_contract
-    input_filename = './docx_files/contract.docx' if input_filename is None else input_filename
-    output_filename = f'.{dirname}/contract_{n_contract}.docx' if output_filename is None else output_filename
-    # print("############", input_filename, output_filename)
-    # print("############", dirname, os.path.exists(dirname))
+    abs_p = '/Users/admin/Desktop/tender/tenderhack/back/chatapp/tenders/1'
+    input_filename = '/Users/admin/Desktop/tender/tenderhack/back/chatapp/docx_files/contract.docx' if input_filename is None else input_filename
+    output_filename = f'{abs_p}/contract_{n_contract}.docx' if output_filename is None else output_filename
+    print("############", input_filename, output_filename)
+    print("############", dirname, os.path.exists(dirname))
     #
-    # abs_p = '/Users/admin/Desktop/tender/tenderhack/back/chatapp/tenders'
+
     # print(abs_p+dirname)
-    if not os.path.exists(abs_p+dirname):
-        os.mkdir(dirname)
+    # if not os.path.exists(abs_p+dirname):
+    #     os.mkdir(dirname)
 
     doc = Document(input_filename)
     raw_json['contract_n'] = n_contract
@@ -125,11 +126,12 @@ def contract_fill(raw_json: dict, dirname : str,  input_filename: str = None,  o
 
     n_contract += 1
     doc.save(output_filename)
-    return filename
+    return output_filename
 
 
 def file_to_docx(filename:str):
     "get clear file"
+    filename='/Users/admin/Desktop/tender/tenderhack/back/chatapp/tenders/1/contract_1.docx'
     doc = Document(filename)
     pattern = re.compile(r'\{([^}]+)=([^}]+)\}')
 
@@ -140,9 +142,9 @@ def file_to_docx(filename:str):
         for cell in table._cells:
             cell.text = re.sub(pattern, r'\2', cell.text)
 
-    filename = f'{"".join(filename.split(".")[:-1])}_export.docx'
-    doc.save(filename)
-    return filename
+    out_filename = f'{"".join(filename.split(".")[:-1])}_export.docx'
+    doc.save(out_filename)
+    return out_filename
 
 
 def file_to_pdf(filename_docx:str, filename_pdf:str = None) -> str:
@@ -152,7 +154,7 @@ def file_to_pdf(filename_docx:str, filename_pdf:str = None) -> str:
     return filename_pdf
 
 
-def contract_change_value(raw_json:dict, filename:str):
+def contract_change_value(raw_json:dict, filename:str=None):
     'tag value to value from json -> new_filename, report_name'
     # {
     # 'document_id': '1',
@@ -277,20 +279,6 @@ json3.pop("signer")
 # print(contract_fill(json3, "/Users/admin/Desktop/tender/tenderhack/back/docx_files/contract.docx"))
 # print(contract_change_value(json1, "/Users/admin/Desktop/tender/tenderhack/back/docx_files/contract_1.docx"))
 
-
-# {
-#     "numberField": "123",
-#     "validityPeriod": {
-#         "startDate": "2023-12-28T19:00:00.000Z",
-#         "endDate": "2023-12-06T19:00:00.000Z"
-#     },
-#     "summ": "123",
-#     "avans": "213",
-#     "financeSource": "123",
-#     "ikz": "123",
-#     "place": "132",
-#     "subject": "312"
-# }
 
 json4 = {
     "numberField": "123",
