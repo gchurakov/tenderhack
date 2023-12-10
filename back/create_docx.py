@@ -53,12 +53,15 @@ locations = {
 }
 
 
-def changes_report_fill(changes : list,  raw_json:dict, old_value=None) -> str:
+def changes_report_fill(changes: list,  raw_json: dict, dirname: str = '',  old_value=None) -> str:
     'create changes report -> output filename'
     global n_report
+    input_filename = './docx_files/changes.docx' if filename is None else filename
+    output_filename = f'.{dirname}/docx_files/changes_{n_report}.docx' if filename is None else filename
+    if not os.path.exists(dirname):
+        os.mkdir(dirname)
 
-    doc = Document('./docx_files/changes.docx')
-
+    doc = Document(input_filename)
     # changes = [locations[tag], '', raw_json[value]]
     changes_table = doc.tables[0]
     row = changes_table.add_row()
@@ -77,14 +80,13 @@ def changes_report_fill(changes : list,  raw_json:dict, old_value=None) -> str:
         for cell in table._cells:
             cell.text = re.sub(pattern, r'\2', cell.text)
 
-    filename = f'./docx_files/changes_{n_report}.docx'
     n_report += 1
-    doc.save(filename)
+    doc.save(output_filename)
     return filename
 
 
 
-def contract_fill(raw_json: dict, dirname : str = '',  filename: str = None) -> str:
+def contract_fill(raw_json: dict, dirname : str,  input_filename: str = None) -> str:
     'create docx contract from dict with info -> output filename'
     # {
     #     "name": "НИУ ВШЭ",
@@ -93,10 +95,13 @@ def contract_fill(raw_json: dict, dirname : str = '',  filename: str = None) -> 
     #     "place": "г.Москва",
     #     "price": "1000"
     # }
-
     global n_contract
-    doc = Document('./docx_files/contract.docx' if filename is None else filename)
+    input_filename = './docx_files/contract.docx' if filename is None else filename
+    output_filename = f'.{dirname}/contract_{n_contract}.docx' if filename is None else filename
+    if not os.path.exists():
+        os.mkdir(dirname)
 
+    doc = Document(input_filename)
     raw_json['contract_n'] = n_contract
     raw_json['today'] = datetime.now().strftime('%d.%m.%Y')
 
@@ -111,9 +116,8 @@ def contract_fill(raw_json: dict, dirname : str = '',  filename: str = None) -> 
                 for cell in row.cells:
                     cell.text = pattern.sub('{' + str(k) + '=' + str(v) + '}', cell.text)
 
-    filename = f'.{dirname}/contract_{n_contract}.docx' if filename is None else filename
     n_contract += 1
-    doc.save(filename)
+    doc.save(output_filename)
     return filename
 
 

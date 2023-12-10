@@ -4,7 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from secrets import *
 
 
-def send_mail(user_email, tender_n=0, supplier=0, supplier_inn=0, contract_n=0, site_addr=''):
+def send_mail(user_email, site_addr='', *args, **kwargs):
     'send email about contract - ADD HOST ADDRESS'
     smtp_server = "smtp.mail.ru"
     smtp_port = 587
