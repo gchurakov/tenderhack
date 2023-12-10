@@ -1,0 +1,17 @@
+.message-input {
+    width: 100%;
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.input {
+    flex: 1;
+}
+
+.send-btn {
+    height: 100%;
+    width: 150px;
+}

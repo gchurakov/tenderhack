@@ -1,0 +1,5 @@
+.form-picker {
+    display: flex;
+    gap: 12px;
+    height: fit-content;
+}

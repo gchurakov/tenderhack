@@ -1,0 +1,16 @@
+.chat-wrapper {
+    padding: 24px 16px;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+.chat {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 16px;
+}
+
+.form-picker {}

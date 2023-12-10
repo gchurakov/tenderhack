@@ -1,0 +1,13 @@
+.message {
+    width: fit-content;
+    min-height: 50px;
+    flex-shrink: 0;
+}
+
+.right {
+    align-self: flex-end;
+}
+
+.left {
+    align-self: flex-start;
+}
