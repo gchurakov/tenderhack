@@ -1,4 +1,4 @@
-TENDERS_DIR = r"C:/Users/misa5/Desktop/500/tenderhack/back/chatapp/tenders/"
+TENDERS_DIR = r"C:/Users/misa5/Desktop/500/tenderhack/hack_tenderhack-master/back/chatapp/tenders"
 INPUT_FILENAME = r"./docx_files/contract.docx"
 LOCATIONS = {
     'finance_source': "1",
@@ -44,3 +44,4 @@ LOCATIONS = {
 EMAIL = "loot500chat@mail.ru"
 EMAIL_PWD = "FErtaiGSR6jUcGaEn5sn"
 EMAIL_RECIPIENT = "gcd248@mail.ru"
+BASE_CONTRACT_URI = "C:/Users/misa5/Desktop/500/tenderhack/hack_tenderhack-master/back/chatapp/tenders1/contract_1.docx"
