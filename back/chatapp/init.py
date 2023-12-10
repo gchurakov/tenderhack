@@ -31,7 +31,7 @@ def create_app(config_class=Config):
     import http_routing
     app.register_blueprint(http_routing.bp)
 
-    from chatapp import msg
+    import msg
     app.register_blueprint(msg.bp)
 
     # socketio.init_app(app)

@@ -1,7 +1,8 @@
 import os
-from flask import request, Blueprint
+from flask import request, Blueprint, jsonify
 from create_docx import contract_fill, contract_change_value, file_to_docx
 from notifications import send_email
+from constants import EMAIL_RECIPIENT
 
 responce = {
     "data": {
@@ -16,11 +17,11 @@ responce = {
 
 changes_json = {
     "data": {
-            "contract_protocol": { 'document_id': '1',
-                                   'tag': 'place',
-                                   'value': 'г. Москва',
-                                   'comment' : 'НУЛЬ'},
-            "comment": "COMMENT"},
+        "contract_protocol": {'document_id': '1',
+                              'tag': 'place',
+                              'value': 'г. Москва',
+                              'comment': 'НУЛЬ'},
+        "comment": "COMMENT"},
     "decision": "1",
     "type": "subject",
     "tender_id": "ID"
@@ -28,17 +29,18 @@ changes_json = {
 
 fill_json = {
     "data": {
-        "numberField": "123",
-        "validityPeriod": {
-            "startDate": "2023-12-28T19:00:00.000Z",
-            "endDate": "2023-12-06T19:00:00.000Z"
-        },
-        "summ": "123",
-        "avans": "213",
-        "financeSource": "123",
-        "ikz": "123",
-        "place": "132",
-        "subject": "312"
+        "contract_protocol":
+            {"numberField": "123",
+             "validityPeriod": {
+                 "startDate": "2023-12-28T19:00:00.000Z",
+                 "endDate": "2023-12-06T19:00:00.000Z"
+             },
+             "summ": "123",
+             "avans": "213",
+             "financeSource": "123",
+             "ikz": "123",
+             "place": "132",
+             "subject": "312"}
     },
     "decision": "1",
     "type": "subject",
@@ -46,6 +48,7 @@ fill_json = {
 }
 
 bp = Blueprint('docx', __name__, url_prefix='/api')
+
 
 @bp.route('/fill_contract', methods=['POST'])
 def fill_contract():
@@ -63,26 +66,32 @@ def fill_contract():
         }
 
         data = request.get_json(silent=True)
+        # Данные для формирования контракта
         payload = data["data"]["contract_protocol"]
+        # Получаем номер тендера, чтобы создать папку с номером тендера в /tenders
+        tender_id = data["tender_id"]
 
-        changes = contract_fill(payload, dirname=f'/{data["tender_id"]}')  # TODO add filename?
+        formed_file_path = contract_fill(payload, tender_id)
 
-        # TODO add notification to email
-        email = "gcd248@mail.ru"
-        print(send_email(email, tender_id=data["tender_id"]))
+        # Константный получатель
+        email = EMAIL_RECIPIENT
+        if send_email(email, tender_id=tender_id):
+            print("EMAIL: SENT successfully")
+        else:
+            print("EMAIL: SENT with error")
 
-        if changes:
-            for file in changes:
-                filename = file_to_docx(file)
-                with open(filename, 'rb') as f:
-                    responce["data"]["contract_protocol"][filename] = f.read()
-            return jsonify(responce), 200
+        if formed_file_path:
+            # for file in changes:
+            #     filename = file_to_docx(file)
+            #     with open(filename, 'rb') as f:
+            #         responce["data"]["contract_protocol"][filename] = f.read()
+            print(formed_file_path)
+            f = os.read()
+            return jsonify("Изменения отражены в контракте"), 200
         else:
             return 'bad request'
-
     else:
         return "bad request"
-
 
 
 @bp.route('/change_value', methods=['POST'])
@@ -103,10 +112,10 @@ def change_value():
         data = request.get_json(silent=True)
         payload = data["data"]["contract_protocol"]
 
-        changes = contract_change_value(payload) # TODO add filename?
+        changes = contract_change_value(payload)  # TODO add filename?
 
-        # TODO add notification to email
-        email = "gcd248@mail.ru"
+        # Константный получатель
+        email = EMAIL_RECIPIENT
         print(send_email(email, tender_id=data["tender_id"], comment=data["data"]["comment"]))
 
         if changes:
@@ -120,7 +129,6 @@ def change_value():
 
     else:
         return "bad request"
-
 
 
 def add_subs(data):
@@ -139,13 +147,11 @@ def add_subs(data):
 
     filenames = []
     for k, v in data["data"]["contract_protocol"].items():
-        filenames.append(dirname+k)
-        with open(dirname+k, 'wb') as f:
+        filenames.append(dirname + k)
+        with open(dirname + k, 'wb') as f:
             f.write(v)
 
     return dirname, filenames
-
-
 
 # payload = {"numberField": "1234",
 #             "validityPeriod": {

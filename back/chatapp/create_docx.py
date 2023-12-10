@@ -3,60 +3,21 @@ import re
 from docx import Document
 from docx2pdf import convert
 from datetime import datetime
+import constants
 import json
+
 # from .core import *
 # from .db import engine, db_session, Base
 # from .models.core import Tender, Document, ContractClause
 # counter of report and contract
 n_report = 1
-n_contract = 1
-locations = {
-    'finance_source' : "1",
-    'contractor_address': "Часть 2",
-    'supplier': "Преамбула",
-    'document_name': "1",
-    'contractor_oktmo': "11",
-    'ikz': "1",
-    'reciver': "11",
-    'prepay': "2",
-    'contractor_kpp': "11",
-    'contractor_okpo': "11",
-    'price': "2",
-    'place': "Преамбула",
-    'supplier_signer_in': "11",
-    'contractor_inn': "11",
-    'contractor_ogrn': "11",
-    'contract_date': "Преамбула",
-    'contractor': "Преамбула",
-    'supplier_email': "11",
-    'supplier_ogrn': "11",
-    'period': "3",
-    'supplier_kpp': "11",
-    'supplier_bik': "11",
-    'contactor_bank': "11",
-    'contractor_bik': "11",
-    'contractor_email': "11",
-    'contractor_okato': "11",
-    'contractor_bank_k_account': "11",
-    'supplier_inn': "11",
-    'today': "Преамбула",
-    'supplier_signer': "Преамбула",
-    'contractor_signer': "Преамбула",
-    'price_str': "2",
-    'contractor_signer_in': "11",
-    'supplier_address': "11",
-    'contractorr_phone': "11",
-    'contract_n': "Преамбула",
-    'supplier_bank': "11",
-    'supplier_phone': "11",
-    'supplier_bank_k_account': "11"
-}
 
 
-def changes_report_fill(changes: list,  raw_json: dict, dirname: str = '',  old_value=None) -> str:
+# Протокол разногласий
+def changes_report_fill(changes: list, raw_json: dict, dirname: str = '', old_value=None) -> str:
     'create changes report -> output filename'
+
     global n_report
-    input_filename = './docx_files/changes.docx' if filename is None else filename
     output_filename = f'.{dirname}/docx_files/changes_{n_report}.docx'
 
     if not os.path.exists(dirname):
@@ -86,8 +47,8 @@ def changes_report_fill(changes: list,  raw_json: dict, dirname: str = '',  old_
     return filename
 
 
-
-def contract_fill(raw_json: dict, dirname : str,  input_filename: str = None,  output_filename: str = None) -> str:
+# Заполнение договора
+def contract_fill(raw_json: dict, tender_id: str) -> str:
     'create docx contract from dict with info -> output filename'
     # {
     #     "name": "НИУ ВШЭ",
@@ -97,18 +58,22 @@ def contract_fill(raw_json: dict, dirname : str,  input_filename: str = None,  o
     #     "price": "1000"
     # }
 
-    global n_contract
-    input_filename = './docx_files/contract.docx' if input_filename is None else input_filename
-    output_filename = f'.{dirname}/contract_{n_contract}.docx' if output_filename is None else output_filename
-    # print("############", input_filename, output_filename)
-    # print("############", dirname, os.path.exists(dirname))
-    #
-    # abs_p = '/Users/admin/Desktop/tender/tenderhack/back/chatapp/tenders'
-    # print(abs_p+dirname)
-    if not os.path.exists(abs_p+dirname):
-        os.mkdir(dirname)
+    # Путь к файлу-шаблону
+    input_filename_path = constants.INPUT_FILENAME
+    # Если нет папки для хранения создаём папку с названием id тендера
+    tender_files_path = constants.TENDERS_DIR + tender_id
 
-    doc = Document(input_filename)
+    if not os.path.exists(tender_files_path):
+        os.mkdir(tender_files_path)
+        n_contract = 1
+    else:
+        n_contract = len(os.listdir(tender_files_path))
+
+    output_filename = f'{tender_files_path}/contract_{n_contract}.docx'
+
+    # Создаём объект из шаблона
+    doc = Document(input_filename_path)
+
     raw_json['contract_n'] = n_contract
     raw_json['today'] = datetime.now().strftime('%d.%m.%Y')
 
@@ -125,16 +90,19 @@ def contract_fill(raw_json: dict, dirname : str,  input_filename: str = None,  o
 
     n_contract += 1
     doc.save(output_filename)
-    return filename
+    print("FROM contract_fill", output_filename)
+    return output_filename
 
 
-def file_to_docx(filename:str):
+def file_to_docx(filename: str):
     "get clear file"
+    print("HELP!")
+    print(filename)
     doc = Document(filename)
     pattern = re.compile(r'\{([^}]+)=([^}]+)\}')
 
     for p in doc.paragraphs:
-        p.text = re.sub(pattern, r'\2',  p.text)
+        p.text = re.sub(pattern, r'\2', p.text)
 
     for table in doc.tables:
         for cell in table._cells:
@@ -145,14 +113,16 @@ def file_to_docx(filename:str):
     return filename
 
 
-def file_to_pdf(filename_docx:str, filename_pdf:str = None) -> str:
+def file_to_pdf(filename_docx: str, filename_pdf: str = None) -> str:
     'filename .docx -> convert file to .pdf'
     filename_pdf = '.' + ''.join(filename_docx.split('.')[:-1]) + '.pdf' if filename_pdf is None else filename_pdf
-    convert(filename_docx,filename_pdf)
+    convert(filename_docx, filename_pdf)
     return filename_pdf
 
 
-def contract_change_value(raw_json:dict, filename:str):
+# Меняет пункт в договоре
+# Создаёт протокол разногласий и туда заносит изменённый пункт
+def contract_change_value(raw_json: dict, filename: str):
     'tag value to value from json -> new_filename, report_name'
     # {
     # 'document_id': '1',
@@ -199,6 +169,7 @@ def contract_change_value(raw_json:dict, filename:str):
     # print("NEW ", all_values[raw_json['tag']])
     return new_filename, report_name
 
+
 def contract_change_punct(raw_json, filename):
     'tag value to value from json'
     # {
@@ -220,36 +191,33 @@ def contract_change_punct(raw_json, filename):
     new_filename = f'{"".join(filename.split(".")[:-1])}_changed.docx'
     doc.save(new_filename)
 
-    #gen report
+    # gen report
     return new_filename
 
 
-
-
 json1 = dict({
-'document_id': '1',
-'tag': 'place',
-'value': 'г. Пермь',
-'comment' : 'НУЛЬ'
+    'document_id': '1',
+    'tag': 'place',
+    'value': 'г. Пермь',
+    'comment': 'НУЛЬ'
 })
 
-
 json2 = dict({
-'document_id': '1',
-'punct': '4.1.',
-'value': 'Мы вам все простим.',
-'comment' : 'НУЛЬ'
+    'document_id': '1',
+    'punct': '4.1.',
+    'value': 'Мы вам все простим.',
+    'comment': 'НУЛЬ'
 })
 # print(contract_change_punct("/Users/admin/Desktop/tender/tenderhack/back/docx_files/contract.docx", json2))
 
 
 # FILL FROM FRONTEND
 json3 = dict({
-"name" : "ПЕРВЫЙ",
-"signer" : "директор Берсенев Илья Иванович",
-"document_name" : "поставка усепешных программистов",
-"place" : "г.Владикавказ",
-"price" : "1000"
+    "name": "ПЕРВЫЙ",
+    "signer": "директор Берсенев Илья Иванович",
+    "document_name": "поставка усепешных программистов",
+    "place": "г.Владикавказ",
+    "price": "1000"
 })
 
 # обработать signer + supplier
@@ -263,9 +231,9 @@ json3.pop("signer")
 
 # FILL FROM FRONTEND
 json3 = dict({
-"name" : "ВТОРОЙ",
-"signer" : "ВТОРОЙ ВТОРОЙ ВТОРОЙ ВТОРОЙ ",
-"document_name" : "поставка усепешных программистов",
+    "name": "ВТОРОЙ",
+    "signer": "ВТОРОЙ ВТОРОЙ ВТОРОЙ ВТОРОЙ ",
+    "document_name": "поставка усепешных программистов",
 })
 
 # обработать signer + supplier
@@ -306,4 +274,3 @@ json4 = {
     "subject": "312"
 }
 # print(contract_fill(json4))
-
