@@ -227,19 +227,21 @@ function CreateContractModal() {
                             onChange={handleChange}
                         />
 
-                        <Typography>Проект контракта</Typography>
-                        <Input
-                            type='file'
-                            name='contractProjectFile'
-                            onChange={handleFileChange}
-                        />
+                        <div>
+                            <Typography>Проект контракта</Typography>
+                            <Input
+                                type='file'
+                                name='contractProjectFile'
+                                onChange={handleFileChange}
+                            />
 
-                        <Typography>Приложения</Typography>
-                        <Input
-                            type='file'
-                            name='attachmentFile'
-                            onChange={handleFileChange}
-                        />
+                            <Typography>Приложения</Typography>
+                            <Input
+                                type='file'
+                                name='attachmentFile'
+                                onChange={handleFileChange}
+                            />
+                        </div>
 
                         <Button
                             style={{ marginTop: '8px', marginRight: '8px' }}
