@@ -100,11 +100,11 @@ def contract_fill(raw_json: dict, dirname : str,  input_filename: str = None,  o
     global n_contract
     input_filename = './docx_files/contract.docx' if input_filename is None else input_filename
     output_filename = f'.{dirname}/contract_{n_contract}.docx' if output_filename is None else output_filename
-    print("############", input_filename, output_filename)
-    print("############", dirname, os.path.exists(dirname))
-
-    abs_p = '/Users/admin/Desktop/tender/tenderhack/back/chatapp/tenders'
-    print(abs_p+dirname)
+    # print("############", input_filename, output_filename)
+    # print("############", dirname, os.path.exists(dirname))
+    #
+    # abs_p = '/Users/admin/Desktop/tender/tenderhack/back/chatapp/tenders'
+    # print(abs_p+dirname)
     if not os.path.exists(abs_p+dirname):
         os.mkdir(dirname)
 
@@ -223,29 +223,6 @@ def contract_change_punct(raw_json, filename):
     #gen report
     return new_filename
 
-
-# def get_data_from_db(clause:ContractClause):
-#     'input = tender'
-#     tags = get_tags_from_docx()
-#     data = dict()
-#     supplier_tags = list(filter(lambda tag: 'supplier' in tag, tags))
-#     contractor_tags = list(filter(lambda tag: 'contractor' in tag, tags))
-#
-#     data['clause_n'] = clause.tid
-#     data['contract_n'] = clause.tender_id
-#     data['today'] = datetime.now().strftime('%d.%m.%Y')
-#
-#     old = clause.before_clause.json()
-#     new = clause.clause.json()
-#
-#
-#     # IN PROGRESS
-#
-#     for tag in supplier_tags:
-#         data[tag] = tag
-#
-#     for tag in contractor_tags:
-#         data[tag] = tag
 
 
 

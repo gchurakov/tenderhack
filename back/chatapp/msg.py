@@ -26,16 +26,23 @@ changes_json = {
     "tender_id": "ID"
 }
 
-changes_json = {
+fill_json = {
     "data": {
-            "contract_protocol": { 'document_id': '1',
-                                   'tag': 'place',
-                                   'value': 'г. Москва',
-                                   'comment' : 'НУЛЬ'},
-            "comment": "COMMENT"},
-        "decision": "1",
-        "type": "subject",
-        "tender_id": "ID"
+        "numberField": "123",
+        "validityPeriod": {
+            "startDate": "2023-12-28T19:00:00.000Z",
+            "endDate": "2023-12-06T19:00:00.000Z"
+        },
+        "summ": "123",
+        "avans": "213",
+        "financeSource": "123",
+        "ikz": "123",
+        "place": "132",
+        "subject": "312"
+    },
+    "decision": "1",
+    "type": "subject",
+    "tender_id": "1"
 }
 
 bp = Blueprint('docx', __name__, url_prefix='/api')
