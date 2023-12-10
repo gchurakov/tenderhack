@@ -1,5 +1,5 @@
 from passlib.hash import sha256_crypt
-from flask import request, Blueprint
+from flask import request, Blueprint, jsonify
 from flask_login import login_user, current_user, logout_user
 from sqlalchemy import select
 
