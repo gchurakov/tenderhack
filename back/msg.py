@@ -1,8 +1,8 @@
 import os
 from flask import request, Blueprint, jsonify
-from create_docx import contract_fill, contract_change_value, contract_change_punct, contract_change_comment
+from create_docx import contract_fill, contract_change_value, contract_change_punct, contract_change_comment, file_to_docx
 from chatapp.http_routing import bp
-from notifications import send_mail
+from notifications import send_email
 
 responce = {
     "data": {
@@ -15,7 +15,7 @@ responce = {
     "tender_id": "ID"
 }
 
-post_json = {
+changes_json = {
 {
     "data": {
             "contract_protocol": { 'document_id': '1',
@@ -28,17 +28,31 @@ post_json = {
         "tender_id": "ID"}
 }
 
+changes_json = {
+{
+    "data": {
+            "contract_protocol": { 'document_id': '1',
+                                   'tag': 'place',
+                                   'value': 'г. Москва',
+                                   'comment' : 'НУЛЬ'},
+            "comment": "COMMENT"},
+        "decision": "1",
+        "type": "subject",
+        "tender_id": "ID"}
+}
 
-# @bp.route('/change_value', methods=['POST'])
-def change_value():
+bp = Blueprint('docx', __name__, url_prefix='/api2')
+
+
+@bp.route('/fill_contract', methods=['POST'])
+def fill_contract():
     if request.method == 'POST':
 
         responce = {
             "data": {
                 "contract_protocol": {
                     # files here : name: bytes
-                },
-                "comment": "COMMENT"
+                }
             },
             "decision": "1",
             "type": "subject",
@@ -48,18 +62,63 @@ def change_value():
         data = request.get_json(silent=True)
         payload = data["data"]["contract_protocol"]
 
-        changes = contract_change_value(payload)
+        changes = contract_fill(payload, dirname=f'/tenders/{data["tender_id"]}')  # TODO add filename?
+
+        # TODO add notification to email
+        email = "gcd248@mail.ru"
+        print(send_email(email, tender_id=data["tender_id"]))
 
         if changes:
             for file in changes:
-                with open(file, 'rb') as f:
-                    responce["data"]["contract_protocol"][file] = f.read()
+                filename = file_to_docx(file)
+                with open(filename, 'rb') as f:
+                    responce["data"]["contract_protocol"][filename] = f.read()
             return responce
         else:
             return 'bad request'
 
     else:
         return "bad request"
+
+
+
+@bp.route('/change_value', methods=['POST'])
+def change_value():
+    if request.method == 'POST':
+
+        responce = {
+            "data": {
+                "contract_protocol": {
+                    # files here : name: bytes
+                }
+            },
+            "decision": "1",
+            "type": "subject",
+            "tender_id": "ID"
+        }
+
+        data = request.get_json(silent=True)
+        payload = data["data"]["contract_protocol"]
+
+        changes = contract_change_value(payload) # TODO add filename?
+
+        # TODO add notification to email
+        email = "gcd248@mail.ru"
+        print(send_email(email, tender_id=data["tender_id"], comment=data["data"]["comment"]))
+
+        if changes:
+            for file in changes:
+                filename = file_to_docx(file)
+                with open(filename, 'rb') as f:
+                    responce["data"]["contract_protocol"][filename] = f.read()
+            return responce
+        else:
+            return 'bad request'
+
+    else:
+        return "bad request"
+
+
 
 def add_subs(data):
     'add tender directory to ./users'
@@ -100,7 +159,6 @@ def add_subs(data):
 #             "attachmentFile": {}
 #         }
 
-dirname = "/back/users/1"
 
 filename = contract_fill(payload, dirname)
 print(filename)

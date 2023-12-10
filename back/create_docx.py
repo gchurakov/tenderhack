@@ -57,7 +57,7 @@ def changes_report_fill(changes: list,  raw_json: dict, dirname: str = '',  old_
     'create changes report -> output filename'
     global n_report
     input_filename = './docx_files/changes.docx' if filename is None else filename
-    output_filename = f'.{dirname}/docx_files/changes_{n_report}.docx' if filename is None else filename
+    output_filename = f'.{dirname}/docx_files/changes_{n_report}.docx'
     if not os.path.exists(dirname):
         os.mkdir(dirname)
 
@@ -66,11 +66,11 @@ def changes_report_fill(changes: list,  raw_json: dict, dirname: str = '',  old_
     changes_table = doc.tables[0]
     row = changes_table.add_row()
     row.cells[0].text = changes[0]
-    row.cells[1].text = f"В соответствие с договором: {old_value}"
+    row.cells[1].text = f"{old_value}"
     row.cells[2].text = changes[2]
 
     # raw_json['contract_n'] = n_contract
-    print(raw_json)
+    # print(raw_json)
     pattern = r'\{"([^"]+)"="([^"]+)"\}'
 
     for p in doc.paragraphs:
@@ -86,7 +86,7 @@ def changes_report_fill(changes: list,  raw_json: dict, dirname: str = '',  old_
 
 
 
-def contract_fill(raw_json: dict, dirname : str,  input_filename: str = None) -> str:
+def contract_fill(raw_json: dict, dirname : str,  input_filename: str = None,  output_filename: str = None) -> str:
     'create docx contract from dict with info -> output filename'
     # {
     #     "name": "НИУ ВШЭ",
@@ -96,9 +96,9 @@ def contract_fill(raw_json: dict, dirname : str,  input_filename: str = None) ->
     #     "price": "1000"
     # }
     global n_contract
-    input_filename = './docx_files/contract.docx' if filename is None else filename
-    output_filename = f'.{dirname}/contract_{n_contract}.docx' if filename is None else filename
-    if not os.path.exists():
+    input_filename = './docx_files/contract.docx' if input_filename is None else input_filename
+    output_filename = f'.{dirname}/contract_{n_contract}.docx' if output_filename is None else output_filename
+    if not os.path.exists(dirname):
         os.mkdir(dirname)
 
     doc = Document(input_filename)
@@ -145,8 +145,8 @@ def file_to_pdf(filename_docx:str, filename_pdf:str = None) -> str:
     return filename_pdf
 
 
-def contract_change_value(raw_json, filename):
-    'tag value to value from json'
+def contract_change_value(raw_json:dict, filename:str):
+    'tag value to value from json -> new_filename, report_name'
     # {
     # 'document_id': '1',
     # 'tag': 'place',

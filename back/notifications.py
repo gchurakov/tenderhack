@@ -4,7 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from secrets import *
 
 
-def send_mail(user_email, site_addr='', *args, **kwargs):
+def send_email(user_email, site_addr='', comment ='', *args, **kwargs):
     'send email about contract - ADD HOST ADDRESS'
     smtp_server = "smtp.mail.ru"
     smtp_port = 587
@@ -13,7 +13,7 @@ def send_mail(user_email, site_addr='', *args, **kwargs):
     msg['From'] = EMAIL
     msg['To'] = user_email
     msg['Subject'] = "Новое сообщение в чате!"
-    body = f'''Вам пришло новое сообщение по Тендеру №{tender_n}.\nОт : {supplier}\nИНН: {supplier_inn}\nДоговор: № {contract_n}\n\nСмотрите скорее!\n{site_addr}'''
+    body = f'''Вам пришло новое сообщение по Тендеру №{tender_n}.\nОт : _SUPPLIER_\nИНН: _INN_\nДоговор: № _CONTRACT_N_\nКомментарий: {comment}\nСмотрите скорее!\n{site_addr}'''
     msg.attach(MIMEText(body, 'plain'))
 
     try:

@@ -32,6 +32,9 @@ def create_app(config_class=Config):
     import http_routing
     app.register_blueprint(http_routing.bp)
 
+    import msg
+    app.register_blueprint(chatapp.msg.bp)
+
     # socketio.init_app(app)
     # socketio.init_app(app, cors_allowed_origins="*")
     socketio.init_app(app, logger=True, engineio_logger=True)
