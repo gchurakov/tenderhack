@@ -13,10 +13,10 @@ export const FormMessagesPicker = () => {
       type: 'form',
       direction: 'right',
     });
-    sendMessage({
-      payload: FormMessage.FORM_AGREEMENT,
-      type: 'form',
-    });
+    // sendMessage({
+    //   payload: FormMessage.FORM_AGREEMENT,
+    //   type: 'form',
+    // });
   };
 
   const sendBigForm = () => {
@@ -33,12 +33,12 @@ export const FormMessagesPicker = () => {
 
   const sendInfo = () => {
     addMessage({
-      payload: FormMessage.MSG_INFO,
+      payload: "Ваши изменения отправлены заказчику, ожидайте его решения. Уведомление продублируется на почту",
       type: 'info',
       direction: 'right',
     });
     sendMessage({
-      payload: FormMessage.MSG_INFO,
+      payload: "Ваши изменения отправлены заказчику, ожидайте его решения. Уведомление продублируется на почту",
       type: 'info',
     });
   };
@@ -65,7 +65,7 @@ export const FormMessagesPicker = () => {
       <Button onClick={sendInfo}>Отправить сообщение от системы</Button>
       <Button onClick={sendPreMadeMessage}>текст</Button>
       <a
-        href={`https://filesamples.com/samples/document/pdf/sample2.pdf`}
+        href={`https://docs.google.com/document/d/16JhjShbbgzjVrcRPOfgwvdcXz0yyjwcP/edit?usp=sharing&ouid=113611173962381039245&rtpof=true&sd=true`}
         download="Example-document"
         target="_blank"
         rel="noreferrer"
