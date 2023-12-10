@@ -11,7 +11,13 @@ bp = Blueprint('tender', __name__, url_prefix='/api_v0')
 @bp.route('/tenders', methods=['GET'])
 def tenders():
     res = Tender.query.all()
-    return f"Here's your tender, Sir: \n {res}", 200
+    return jsonify([x.to_dict() for x in res])
+
+
+@bp.route('/documents', methods=['GET'])
+def documents():
+    res = Tender.query.all()
+    raise NotImplementedError
 
 
 @bp.route('/add_tender', methods=['POST'])

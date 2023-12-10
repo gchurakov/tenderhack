@@ -25,6 +25,7 @@ def create_app(config_class=Config):
 
     from . import tender
     app.register_blueprint(tender.bp)
+
     from . import http_routing
     app.register_blueprint(http_routing.bp)
 
