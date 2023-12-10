@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 type ChatMessage = {
-  type: 'text' | 'form' |'info' |'form2';
+  type: 'text' | 'form' |'info' |'form2' | 'FORM_PREMADE';
   payload: string;
   direction?: 'right' | 'left';
 };

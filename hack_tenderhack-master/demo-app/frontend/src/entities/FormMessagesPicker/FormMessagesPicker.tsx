@@ -43,11 +43,36 @@ export const FormMessagesPicker = () => {
     });
   };
 
+  const sendPreMadeMessage = ()=>{
+    addMessage({
+      payload: FormMessage.FORM_PREMADE,
+      type: 'FORM_PREMADE',
+      direction: 'left',
+    });
+  }
+
+  const onDownload = (url: string) => {
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = link.href.substring(link.href.lastIndexOf('/')+1);
+    link.click();
+  }
+
   return (
     <div className="form-picker">
       <Button onClick={sendFormAgreement}>Отправить форму соглашения</Button>
       <Button onClick={sendBigForm}>Отправить форму создания</Button>
       <Button onClick={sendInfo}>Отправить сообщение от системы</Button>
+      <Button onClick={sendPreMadeMessage}>текст</Button>
+      <a
+        href={`https://filesamples.com/samples/document/pdf/sample2.pdf`}
+        download="Example-document"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <Button>скачать файл</Button>
+      </a>
+      
     </div>
   );
 };

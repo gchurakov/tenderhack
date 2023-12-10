@@ -7,6 +7,7 @@ import MsgPos from '@/components/chat/MessagePosition'
 import InfoMessage from '@/components/messages/InfoMessage/InfoMessage'
 import { Typography } from '@mui/material';
 import CreateContractModal from '@/components/CreateContractModal/CreateContractModal';
+import CustomerEditedRedaction from '@/components/forms/CustomerEditedRedaction/CustomerEditedRedaction';
 
 interface Props {
   message: string;
@@ -26,6 +27,10 @@ export const Message = ({ content, message, orientation = 'left' }: Props) => {
   if (content === MessageType.FORM2) {
     return <MsgPos pos={orientation==='left'?'0':'1'}><CreateContractModal className=''/></MsgPos>
   }
+  if (content === MessageType.FORM_PREMADE) {
+    return <MsgPos pos={orientation==='left'?'0':'1'}><CustomerEditedRedaction data={{idDocument:'1', item:'1', proposedRedaction: 'уменьшение количества стульев', customerRedaction:'количество стульев остаётся', comment:'мы не можем себе это позволить'}} className=''/></MsgPos>
+  }
+  
 
   return (
     <Card className={className} shadow="xs" padding="sm" radius="md" withBorder>
