@@ -29,7 +29,7 @@ function CreateContractModal() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [formData, setFormData] = useState({
+    const [contractProtocol, setContractProtocol] = useState({
         numberField: '',
         validityPeriod: {
             startDate: null,
@@ -41,6 +41,9 @@ function CreateContractModal() {
         ikz: '',
         place: '',
         subject: '',
+    });
+
+    const [subsData, setSubsData] = useState({
         contractProjectFile: null,
         attachmentFile: null,
     });
@@ -48,8 +51,8 @@ function CreateContractModal() {
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         const name = event.target.name;
-        setFormData({
-            ...formData,
+        setSubsData({
+            ...contractProtocol,
             [name]: file,
         });
     };
@@ -57,22 +60,23 @@ function CreateContractModal() {
     const handleChange = (e) => {
         const { name, value } = e.target;
         console.log(name, value);
-        setFormData({
-            ...formData,
+        setContractProtocol({
+            ...contractProtocol,
             [name]: value,
         });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
+        console.log('contractProtocol:', contractProtocol);
+        console.log('subsData:', subsData);
     };
 
     const handleDateChange = (date, field) => {
-        setFormData({
-            ...formData,
+        setContractProtocol({
+            ...contractProtocol,
             validityPeriod: {
-                ...formData.validityPeriod,
+                ...contractProtocol.validityPeriod,
                 [field]: date,
             },
         });
@@ -115,7 +119,7 @@ function CreateContractModal() {
                             fullWidth
                             variant='outlined'
                             name='numberField'
-                            value={formData.numberField}
+                            value={contractProtocol.numberField}
                             onChange={handleChange}
                         />
 
@@ -126,10 +130,13 @@ function CreateContractModal() {
                                     size='small'
                                     label='От'
                                     name='validityPeriodStart'
-                                    // value={formData.validityPeriodStart}
+                                    // value={contractProtocol.validityPeriodStart}
                                     // onChange={handleChange}
 
-                                    value={formData.validityPeriod.startDate}
+                                    value={
+                                        contractProtocol.validityPeriod
+                                            .startDate
+                                    }
                                     onChange={(date) =>
                                         handleDateChange(date, 'startDate')
                                     }
@@ -144,10 +151,12 @@ function CreateContractModal() {
                                     label='До'
                                     size='small'
                                     name='validityPeriodEnd'
-                                    // value={formData.validityPeriodEnd}
+                                    // value={contractProtocol.validityPeriodEnd}
                                     // onChange={handleChange}
 
-                                    value={formData.validityPeriod.endDate}
+                                    value={
+                                        contractProtocol.validityPeriod.endDate
+                                    }
                                     onChange={(date) =>
                                         handleDateChange(date, 'endDate')
                                     }
@@ -169,7 +178,7 @@ function CreateContractModal() {
                             step='0.000001'
                             variant='outlined'
                             name='summ'
-                            value={formData.summ}
+                            value={contractProtocol.summ}
                             onChange={handleChange}
                         />
 
@@ -181,7 +190,7 @@ function CreateContractModal() {
                             step='0.000001'
                             variant='outlined'
                             name='avans'
-                            value={formData.avans}
+                            value={contractProtocol.avans}
                             onChange={handleChange}
                         />
 
@@ -191,7 +200,7 @@ function CreateContractModal() {
                             fullWidth
                             variant='outlined'
                             name='subject'
-                            value={formData.subject}
+                            value={contractProtocol.subject}
                             onChange={handleChange}
                         />
 
@@ -201,7 +210,7 @@ function CreateContractModal() {
                             fullWidth
                             variant='outlined'
                             name='place'
-                            value={formData.place}
+                            value={contractProtocol.place}
                             onChange={handleChange}
                         />
 
@@ -213,7 +222,7 @@ function CreateContractModal() {
                             fullWidth
                             variant='outlined'
                             name='ikz'
-                            value={formData.ikz}
+                            value={contractProtocol.ikz}
                             onChange={handleChange}
                         />
 
@@ -223,7 +232,7 @@ function CreateContractModal() {
                             fullWidth
                             variant='outlined'
                             name='financeSource'
-                            value={formData.financeSource}
+                            value={contractProtocol.financeSource}
                             onChange={handleChange}
                         />
 
