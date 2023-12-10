@@ -65,7 +65,7 @@ export const FormMessagesPicker = () => {
       <Button onClick={sendInfo}>Отправить сообщение от системы</Button>
       <Button onClick={sendPreMadeMessage}>текст</Button>
       <a
-        href={`http://127.0.0.1:5000/api/fill_contract`}
+        href={`http://127.0.0.1:5000/api/get_contract`}
         download="Example-document"
         target="_blank"
         rel="noreferrer"
